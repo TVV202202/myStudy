@@ -7,23 +7,27 @@ public class Binary {
     }
 
     public String toString() {
-        String result = "00000000";
+        StringBuilder result = new StringBuilder();
         byte value=num;
-        if (num == -128) {
-            return "10000000";
-        } else if (num < 0){
+        if (num < 0){
             value = (byte) (num-128);
         }
-            while (value > 0) {
-                int tmp = value & 1;
-                result = (result + tmp).substring(1, 9);
-                value >>= 1;
-            }
+        while (value > 0) {
+            int tmp = value & 1;
+            result.insert(0, tmp);
+            value >>= 1;
+        }
+        while (result.length() != 7) {
+            result.insert(0, 0);
+        }
         if (num < 0){
-            result = 1 + result.substring(1,8);
+            result.insert(0, 1);
+        }
+        else {
+            result.insert(0, 0);
         }
 
-        return result;
+        return result.toString();
     }
 
     public static void main(String[] args) {
@@ -33,9 +37,9 @@ public class Binary {
        // System.out.println(binary1);
         // Binary binary2 = new Binary((byte) 127);
         //System.out.println(binary2);
-        Binary binary3 = new Binary((byte) -108);
+        Binary binary3 = new Binary((byte) -128);
         System.out.println(binary3);
-        System.out.println(Integer.toBinaryString(-108));
+        System.out.println(Integer.toBinaryString(-128));
         Binary binary4 = new Binary((byte) -1);
         System.out.println(binary4);
         System.out.println(Integer.toBinaryString(-1));
