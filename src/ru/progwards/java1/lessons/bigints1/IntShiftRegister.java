@@ -1,6 +1,5 @@
 package ru.progwards.java1.lessons.bigints1;
 
-import static ru.progwards.java1.lessons.bigints1.ByteRegister.SIZEBYTE;
 import static ru.progwards.java1.lessons.bigints1.IntRegister.SIZEINT;
 
 public class IntShiftRegister extends ShiftRegister{

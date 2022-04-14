@@ -1,7 +1,7 @@
 package ru.progwards.java1.lessons.bigints1;
 
 import static ru.progwards.java1.lessons.bigints1.IntCounter.dec;
-import static ru.progwards.java1.lessons.bigints1.IntCounter.inc;
+//import static ru.progwards.java1.lessons.bigints1.IntCounter.inc;
 import static ru.progwards.java1.lessons.bigints1.IntShiftRegister.left;
 import static ru.progwards.java1.lessons.bigints1.IntShiftRegister.right;
 import static ru.progwards.java1.lessons.bigints1.IntSummator.add;
@@ -93,18 +93,22 @@ public class IntRegister extends Register {
 
 
     public static void main(String[] args) {
-        IntRegister intRegister0 = new IntRegister(218);
+        IntRegister intRegister0 = new IntRegister(82);
         System.out.println(intRegister0);
         System.out.println(intRegister0.toDecString());
 
-        IntRegister intRegister2 = new IntRegister(71);
+        IntRegister intRegister2 = new IntRegister(247);
         System.out.println(intRegister2);
         System.out.println(intRegister2.toDecString());
 //
 //        IntRegister tmp = intRegister2.toTwosComplement(intRegister2);
 //        System.out.println(tmp);
 //
-        add(intRegister0,intRegister2);
+//        add(intRegister0,intRegister2);
+//        System.out.println(intRegister0);
+//        System.out.println(intRegister0.toDecString());
+
+        sub(intRegister0,intRegister2);
         System.out.println(intRegister0);
         System.out.println(intRegister0.toDecString());
 

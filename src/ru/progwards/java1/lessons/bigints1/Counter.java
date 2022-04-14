@@ -1,10 +1,10 @@
 package ru.progwards.java1.lessons.bigints1;
 
-public class Counter {
-    public void inc(Register value){
+public abstract class Counter {
+    public static void inc(Register value){
     }
 
-    public void dec(Register value){
+    public static void dec(Register value){
     }
 
 }
