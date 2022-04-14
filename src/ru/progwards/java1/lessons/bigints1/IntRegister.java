@@ -104,9 +104,9 @@ public class IntRegister extends Register {
 //        IntRegister tmp = intRegister2.toTwosComplement(intRegister2);
 //        System.out.println(tmp);
 //
-//        add(intRegister0,intRegister2);
-//        System.out.println(intRegister0);
-//        System.out.println(intRegister0.toDecString());
+        add(intRegister0,intRegister2);
+        System.out.println(intRegister0);
+        System.out.println(intRegister0.toDecString());
 
         sub(intRegister0,intRegister2);
         System.out.println(intRegister0);

@@ -9,7 +9,7 @@ public class ByteCounter extends Counter{
 //    первый способ, я думаю, быстрее, но второй не заставляет помнить в каком именно первоначальном виде хранятся элементы массива
 
 
-    public static void inc(ByteRegister value) {
+    public void inc(ByteRegister value) {
         for (int i = 0; i < SIZEBYTE + 1; i++) {
             if (value.bits[i].bit) {
                 value.bits[i].bit = false;
@@ -20,7 +20,7 @@ public class ByteCounter extends Counter{
         }
     }
 
-    public static void dec(ByteRegister value) {
+    public void dec(ByteRegister value) {
         for (int i = 0; i < SIZEBYTE + 1; i++) {
             if (value.bits[i].bit) {
                 value.bits[i].bit = false;
