@@ -4,7 +4,7 @@ import static ru.progwards.java1.lessons.bigints1.IntRegister.SIZEINT;
 
 public class IntCounter extends Counter {
 
-    public void inc(IntRegister value) {
+    public static void inc(IntRegister value) {
         for (int i = 0; i < SIZEINT + 1; i++) {
             if (value.valueArray[i].bit) {
                 value.valueArray[i].bit = false;
@@ -15,8 +15,7 @@ public class IntCounter extends Counter {
         }
     }
 
-    public void dec(IntRegister value) {
-        //boolean tmp = value.value[SIZEINT].bit;
+    public static void dec(IntRegister value) {
         for (int i = 0; i < SIZEINT+1; i++) {
             if (value.valueArray[i].bit) {
                 value.valueArray[i].bit = false;
