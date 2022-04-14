@@ -7,8 +7,8 @@ public class Binary {
     }
 
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        byte value=num;
+        //StringBuilder result = new StringBuilder();
+/*        byte value=num;
         if (num < 0){
             value = (byte) (num-128);
         }
@@ -27,7 +27,17 @@ public class Binary {
             result.insert(0, 0);
         }
 
-        return result.toString();
+        return result.toString();*/
+
+        String result="";
+        for (int i = 0; i < 8; i++)
+        {
+//логическое  & c 1
+            result = (((num & 1) == 0) ? "0" : "1") + result;
+//Сдвинуть число на 1 бит
+            num = (byte) (num >> 1);
+        }
+        return result;
     }
 
     public static void main(String[] args) {
