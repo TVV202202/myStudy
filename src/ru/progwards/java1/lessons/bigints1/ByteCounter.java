@@ -21,18 +21,12 @@ public class ByteCounter extends Counter{
     }
 
     public static void dec(ByteRegister value) {
-        boolean tmp = value.bits[SIZEBYTE].bit;
         for (int i = 0; i < SIZEBYTE + 1; i++) {
             if (value.bits[i].bit) {
                 value.bits[i].bit = false;
-                if (!tmp) {
                     break;
-                }
             } else {
                 value.bits[i].bit = true;
-                if (tmp) {
-                    break;
-                }
             }
         }
     }

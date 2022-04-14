@@ -22,8 +22,8 @@ public class ByteRegister extends Register {
     public ByteRegister(byte value) {
         //bits[SIZEBYTE] = (value < 0) ? new Bit(true) : new Bit();
         for (int i = 0; i < SIZEBYTE+1; i++) {
-            bits[i] = new Bit(value % 2 != 0);
-            value = (byte) (value / 2);
+            bits[i] = (((value & 1) == 0) ? new Bit() : new Bit(true));
+            value = (byte) (value >> 1);
         }
     }
     @Override
@@ -46,23 +46,23 @@ public class ByteRegister extends Register {
     }
 
     public static void main(String[] args) {
-        byte num = (byte) 0b00000001;
+        byte num = (byte) 64;
 
         ByteRegister byteRegister = new ByteRegister(num);
-        ByteRegister byteRegister1 = new ByteRegister((byte) 0);
-        for (int i = 0; i < SIZEBYTE + 1; i++) {
-            System.out.print(byteRegister.bits[SIZEBYTE - i]);
-        }
+        ByteRegister byteRegister1 = new ByteRegister((byte) 65);
+//        for (int i = 0; i < SIZEBYTE + 1; i++) {
+//            System.out.print(byteRegister.bits[SIZEBYTE - i]);
+//        }
         System.out.println();
 
         System.out.println(byteRegister.toDecString() + " это "
                 + byteRegister.toString());
         System.out.println(byteRegister1.toDecString() + " это "
                 + byteRegister1.toString());
-
-        left(byteRegister);
-        System.out.println("left это " + byteRegister.toDecString() + " это "
-                + byteRegister);
+//
+//        left(byteRegister);
+//        System.out.println("left это " + byteRegister.toDecString() + " это "
+//                + byteRegister);
 //        right(byteRegister);
 //        System.out.println("right это " + byteRegister.toDecString() + " это "
 //                + byteRegister);
@@ -70,14 +70,14 @@ public class ByteRegister extends Register {
 //        inc(byteRegister);
 //        System.out.println("inc 1 это " + byteRegister.toDecString() + " это "
 //                + byteRegister);
-        dec(byteRegister);
-        System.out.println("dec 1 это " + byteRegister.toDecString() + " это "
-                + byteRegister);
-        inc(byteRegister);
-        System.out.println("inc 1 это " + byteRegister.toDecString() + " это "
-                + byteRegister);
+//        dec(byteRegister);
+//        System.out.println("dec 1 это " + byteRegister.toDecString() + " это "
+//                + byteRegister);
+//        inc(byteRegister);
+//        System.out.println("inc 1 это " + byteRegister.toDecString() + " это "
+//                + byteRegister);
 
-        System.out.println((byte) (num));
+//        System.out.println((byte) (num));
 
         if (add(byteRegister,byteRegister1)){
             System.out.println(byteRegister.toDecString());

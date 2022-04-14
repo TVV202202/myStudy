@@ -5,7 +5,7 @@ import static ru.progwards.java1.lessons.bigints1.ByteRegister.SIZEBYTE;
 public class ByteSummator extends Summator{
     public static boolean add(ByteRegister value1, ByteRegister value2) {
         boolean digit = false;
-        for (int i = 0; i < SIZEBYTE; i++) {
+        for (int i = 0; i < SIZEBYTE+1; i++) {
             if (value1.bits[i].bit && value2.bits[i].bit) {
                 if (digit) {
                     value1.bits[i] = new Bit(true);
