@@ -76,6 +76,14 @@ public class IntRegister extends Register {
 
     public IntRegister toTwosComplement(IntRegister value){
         IntRegister newVal = new IntRegister();
+
+        if (value.toDecString().equals("0")){
+            for (int i = 0; i < SIZEINT+1; i++) {
+                newVal.valueArray[i].bit = value.valueArray[i].bit;
+                return newVal;
+            }
+        }
+
         for (int i=0; i<SIZEINT+1; i++) { // инвертируем
             newVal.valueArray[i].bit = !value.valueArray[i].bit;
         }
