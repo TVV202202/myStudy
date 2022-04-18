@@ -93,20 +93,20 @@ public class IntRegister extends Register {
 
 
     public static void main(String[] args) {
-        IntRegister intRegister0 = new IntRegister(82);
+        IntRegister intRegister0 = new IntRegister(253);
         System.out.println(intRegister0);
         System.out.println(intRegister0.toDecString());
 
-        IntRegister intRegister2 = new IntRegister(247);
+        IntRegister intRegister2 = new IntRegister(0);
         System.out.println(intRegister2);
         System.out.println(intRegister2.toDecString());
 //
 //        IntRegister tmp = intRegister2.toTwosComplement(intRegister2);
 //        System.out.println(tmp);
-//
-        add(intRegister0,intRegister2);
-        System.out.println(intRegister0);
-        System.out.println(intRegister0.toDecString());
+
+//        add(intRegister0,intRegister2);
+//        System.out.println(intRegister0);
+//        System.out.println(intRegister0.toDecString());
 
         sub(intRegister0,intRegister2);
         System.out.println(intRegister0);

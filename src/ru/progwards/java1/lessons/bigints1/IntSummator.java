@@ -35,7 +35,11 @@ public class IntSummator extends Summator{
     }
 
 
-    public static void sub(IntRegister value1, IntRegister value2){
-       add(value1, value2.toTwosComplement(value2));
+    public static void sub(IntRegister value1, IntRegister value2) {
+        if (value2.toDecString().equals("0")) {
+            add(value1, value2);
+        } else {
+            add(value1, value2.toTwosComplement(value2));
+        }
     }
 }
