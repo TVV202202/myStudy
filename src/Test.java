@@ -1,7 +1,6 @@
-import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Test {
 
@@ -25,9 +24,41 @@ public class Test {
         }
     }
 
-    public static void main(String[] args) {
+    private static int lineCount(String filename) throws IOException{
+        try {
+            int res=0;
+            FileReader fileReader = new FileReader(filename);
+            Scanner scanner = new Scanner(fileReader);
+            while (scanner.hasNextLine()){
+                String s = scanner.nextLine();
+                res++;
+            }
+            fileReader.close();
+            return res;
+        }
+        catch (IOException e){
+            throw new IOException("файл не найден");
+        }
+    }
+
+//    private static int lineCount(String filename) throws IOException{
+//        int res = 0;
+//        FileReader fileReader = new FileReader(filename);
+//        Scanner scanner = new Scanner(fileReader);
+//        while (scanner.hasNextLine()) {
+//            String s = scanner.nextLine();
+//            res++;
+//        }
+//        fileReader.close();
+//        return res;
+//
+//    }
+
+
+
+    public static void main(String[] args) throws IOException{
         //System.out.println(sqr(5));
-        System.out.println(test(null));
+        System.out.println(lineCount("11.txt"));
     }
 }
 
