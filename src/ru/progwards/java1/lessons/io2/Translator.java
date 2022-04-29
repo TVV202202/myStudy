@@ -20,14 +20,14 @@ public class Translator {
                 tail = String.valueOf(ch);
                 strArray[i] = strArray[i].substring(0, strArray[i].length() - 1);
             }
-//            if (strArray[i].toLowerCase().equals(inLang[i])) {
-            if (Character.isUpperCase(strArray[i].charAt(0))) {
-                strArray[i] = outLang[i];
-                strArray[i] = Character.toUpperCase(strArray[i].charAt(0)) + strArray[i].substring(1) + tail;
-            } else {
-                strArray[i] = outLang[i] + tail;
+            if (strArray[i].toLowerCase().equals(inLang[i])) {
+                if (Character.isUpperCase(strArray[i].charAt(0))) {
+                    strArray[i] = outLang[i];
+                    strArray[i] = Character.toUpperCase(strArray[i].charAt(0)) + strArray[i].substring(1) + tail;
+                } else {
+                    strArray[i] = outLang[i] + tail;
+                }
             }
-//           }
         }
         return String.join(" ", strArray);
     }

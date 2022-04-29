@@ -2,17 +2,15 @@ package ru.progwards.java1.lessons.io2;
 
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Censor {
     static class CensorException extends Exception {
-        public String fileName;
-        public String exeptName;
+        private String fileName;
+        private String exeptName;
 
-        //public String getFileName(){return fileName;}
-        public CensorException(String fileName, Exception exeptName) {
-            this.exeptName = String.valueOf(exeptName);
+        public CensorException(String fileName, String exeptName) {
+            this.exeptName = exeptName;
             this.fileName = fileName;
         }
 
@@ -58,14 +56,14 @@ public class Censor {
             writer.close();
 
         } catch (Exception e) {
-            throw new CensorException(inoutFileName, e);
+            throw new CensorException(inoutFileName, e.getMessage());
         }
 
     }
 
     public static void main(String[] args) throws CensorException {
         String[] obscene = {"Java", "Oracle", "Sun", "Microsystems"};
-        censorFile("3", obscene);
+        censorFile(null, obscene);
     }
 
 }
