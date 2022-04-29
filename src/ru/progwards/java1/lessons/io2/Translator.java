@@ -12,8 +12,8 @@ public class Translator {
     }
 
     public String translate(String sentence) {
-        if ("".equals(sentence)) return sentence;
-        if (inLang.length != outLang.length)
+        if ("".equals(sentence) ) return sentence;
+        if (inLang.length != outLang.length || outLang.length == 0)
             throw new ArrayIndexOutOfBoundsException("Размеры словарей не совпадают.");
         String[] strArray = sentence.split(" ");
 
