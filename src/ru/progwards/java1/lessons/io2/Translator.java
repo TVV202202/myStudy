@@ -30,23 +30,29 @@ public class Translator {
                 head = String.valueOf(chStart);
                 strArray[i] = strArray[i].substring(1);
             }
-
-            if (strArray[i].toLowerCase().equals(inLang[i])) {
-                if (Character.isUpperCase(strArray[i].charAt(0))) {
-                    strArray[i] = outLang[i];
-                    strArray[i] = head + Character.toUpperCase(strArray[i].charAt(0)) + strArray[i].substring(1) + tail;
-                } else {
-                    strArray[i] = head + outLang[i] + tail;
+            boolean flag = true;
+            for (int j=0; j<inLang.length; j++){
+                if (strArray[i].toLowerCase().equals(inLang[j])) {
+                    if (Character.isUpperCase(strArray[i].charAt(0))) {
+                        strArray[i] = outLang[j];
+                        strArray[i] = head + Character.toUpperCase(strArray[i].charAt(0)) + strArray[i].substring(1) + tail;
+                    } else {
+                        strArray[i] = head + outLang[j] + tail;
+                    }
+                    flag =false;
+                    break;
                 }
             }
+            if (flag) strArray[i] = head + strArray[i] + tail;
+
         }
         return String.join(" ", strArray);
     }
 
     public static void main(String[] args) {
-        String[] inLang = {"make", "love", "not", "war"};
-        String[] outLang = {"твори", "любовь", "не", "войну"};
+        String[] inLang = {"hello", "full", "world", "shit"};
+        String[] outLang = {"привет", "комплекс", "мир", "мероприятий"};
         Translator translator = new Translator(inLang, outLang);
-        System.out.println(translator.translate("Make Love, not war."));
+        System.out.println(translator.translate("Hello. java, full Qyqy"));
     }
 }
