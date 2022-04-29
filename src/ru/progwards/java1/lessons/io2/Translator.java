@@ -7,12 +7,14 @@ public class Translator {
     private String[] outLang;
 
     public Translator(String[] inLang, String[] outLang) {
-        this.inLang = Arrays.copyOf(inLang, inLang.length);
-        this.outLang = Arrays.copyOf(outLang, outLang.length);
+        this.inLang = inLang;
+        this.outLang = outLang;
     }
 
     public String translate(String sentence) {
         if ("".equals(sentence)) return sentence;
+        if (inLang.length != outLang.length)
+            throw new ArrayIndexOutOfBoundsException("Размеры словарей не совпадают.");
         String[] strArray = sentence.split(" ");
 
         for (int i = 0; i < strArray.length; i++) {
