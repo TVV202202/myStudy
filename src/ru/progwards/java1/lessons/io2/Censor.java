@@ -58,7 +58,7 @@ public class Censor {
             reader.close();
             scanner.close();
 
-            FileWriter writer = new FileWriter("2.txt");
+            FileWriter writer = new FileWriter(inoutFileName);
             writer.write(String.valueOf(stringBuilder));
             writer.close();
 
@@ -69,7 +69,7 @@ public class Censor {
     }
 
     public static void main(String[] args) throws CensorException {
-        String[] obscene = {"two", "count", "write", "day", "storey"};
+        String[] obscene = {"write", "storey", "day", "count", "two"};
         censorFile("1.txt", obscene);
     }
 

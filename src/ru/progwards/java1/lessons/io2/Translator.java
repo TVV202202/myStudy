@@ -41,10 +41,10 @@ public class Translator {
         return String.join(" ", strArray);
     }
 
-//    public static void main(String[] args) {
-//        String[] inLang = {"make", "love", "not", "war"};
-//        String[] outLang = {"твори", "любовь", "не", "войну"};
-//        Translator translator = new Translator(inLang, outLang);
-//        System.out.println(translator.translate("Make Love-not war."));
-//    }
+    public static void main(String[] args) {
+        String[] inLang = {"make", "love", "not", "war"};
+        String[] outLang = {"твори", "любовь", "не", "войну"};
+        Translator translator = new Translator(inLang, outLang);
+        System.out.println(translator.translate("Make Love, not war."));
+    }
 }
