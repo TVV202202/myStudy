@@ -16,7 +16,7 @@ public class Censor {
 
         @Override
         public String toString() {
-            return fileName + ": " + exeptName;
+            return fileName + ":" + exeptName;
         }
     }
 

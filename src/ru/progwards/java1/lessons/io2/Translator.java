@@ -12,7 +12,9 @@ public class Translator {
     }
 
     public String translate(String sentence) {
+        if ("".equals(sentence)) return sentence;
         String[] strArray = sentence.split(" ");
+
         for (int i = 0; i < strArray.length; i++) {
             String tail = "";
             char ch = strArray[i].charAt(strArray[i].length() - 1);
@@ -36,6 +38,6 @@ public class Translator {
         String[] inLang = {"make", "love", "not", "war"};
         String[] outLang = {"твори", "любовь", "не", "войну"};
         Translator translator = new Translator(inLang, outLang);
-        System.out.println(translator.translate("Make Love, not war."));
+        System.out.println(translator.translate(" "));
     }
 }
