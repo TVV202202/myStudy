@@ -41,8 +41,8 @@ public class Finder {
         for (int i = 1; i <= numbers.size(); i++) {
             list.add(i);
         }
-        tmpNumbers.removeAll(list);
-        return tmpNumbers.size() == 0;
+        list.removeAll(tmpNumbers);
+        return list.size() == 0;
     }
 
     public static String findSimilar(Collection<String> names) {
@@ -68,7 +68,7 @@ public class Finder {
 
     public static void main(String[] args) {
         Integer[] str = {9, 27, 4, 16, 64, 5, 25, 125, 6, 36, 216, 7, 49, 343, 8, 64, 512, 9, 81, 729, 10, 100, 1000};
-        Integer[] str2 = {1,2,3,4,5,6,7,8,9,10};
+        Integer[] str2 = {4,1,4,1,2};
         Collection<Integer> test1 = new ArrayList(List.of(str2));
         Collection<Integer> test2 = findMinSumPair(test1);
         Collection<Integer> test3 = findLocalMax(test1);
