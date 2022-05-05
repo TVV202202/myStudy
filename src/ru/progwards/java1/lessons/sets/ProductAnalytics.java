@@ -11,7 +11,7 @@ public class ProductAnalytics {
         this.products = products;
     }
 
-    public static Set<Product> existInAll() {
+    public Set<Product> existInAll() {
         Set<Product> prod = new HashSet<>(shops.get(0).getProducts());
         for (int i = 1; i < shops.size(); i++) {
             prod.retainAll(shops.get(i).getProducts());
@@ -19,7 +19,7 @@ public class ProductAnalytics {
         return prod;
     }
 
-    public static Set<Product> existAtListInOne() {
+    public Set<Product> existAtListInOne() {
         Set<Product> prod = new HashSet<>();
         for (Shop shop : shops) {
             prod.addAll(shop.getProducts());
@@ -27,7 +27,7 @@ public class ProductAnalytics {
         return prod;
     }
 
-    public static Set<Product> notExistInShops() {
+    public Set<Product> notExistInShops() {
         Set<Product> prod = new HashSet<>(products);
         for (Shop shop : shops) {
             prod.removeAll(shop.getProducts());
@@ -35,7 +35,7 @@ public class ProductAnalytics {
         return prod;
     }
 
-    public static Set<Product> existOnlyInOne() {//
+    public Set<Product> existOnlyInOne() {//
         Set<Product> tmp = new HashSet<>(existAtListInOne());
         Set<Product> prod = new HashSet<>(existAtListInOne());
         for (Product el : tmp) {
@@ -75,8 +75,7 @@ public class ProductAnalytics {
         Shop q4 = new Shop(List.of(a9, a1, a3, a8));
 
         ProductAnalytics prAn = new ProductAnalytics(List.of(q1, q2, q3, q4), List.of(a1, a2, a3, a4, a5, a6, a7, a8, a9, n1, n2, n3));
-        Set<Product> result = new HashSet<>();
-        result = existOnlyInOne();
+        Set<Product> result = prAn.notExistInShops();
         for (Product el : result) {
             System.out.println(el);
         }

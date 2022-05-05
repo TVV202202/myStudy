@@ -13,6 +13,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" + "code='" + code + '\'' + '}';
+        return code;
     }
 }
