@@ -6,7 +6,7 @@ public class ProductAnalytics {
     private static List<Shop> shops;
     private static List<Product> products;
 
-    public ProductAnalytics(List<Shop> shops, List<Product> products) {
+    public ProductAnalytics(List<Product> products, List<Shop> shops) {
         this.shops = shops;
         this.products = products;
     }
@@ -74,7 +74,7 @@ public class ProductAnalytics {
         Shop q3 = new Shop(List.of(a1, a7, a6));
         Shop q4 = new Shop(List.of(a9, a1, a3, a8));
 
-        ProductAnalytics prAn = new ProductAnalytics(List.of(q1, q2, q3, q4), List.of(a1, a2, a3, a4, a5, a6, a7, a8, a9, n1, n2, n3));
+        ProductAnalytics prAn = new ProductAnalytics( List.of(a1, a2, a3, a4, a5, a6, a7, a8, a9, n1, n2, n3), List.of(q1, q2, q3, q4));
         Set<Product> result = prAn.notExistInShops();
         for (Product el : result) {
             System.out.println(el);
