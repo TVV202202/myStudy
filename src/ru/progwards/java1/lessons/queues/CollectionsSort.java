@@ -3,6 +3,8 @@ package ru.progwards.java1.lessons.queues;
 import java.util.*;
 
 public class CollectionsSort {
+    static final int ELEMENTS_COUNT = 100;
+
     public static void mySort(Collection<Integer> data) {
         List<Integer> tmpList = new ArrayList<>(data);
         int tmp;
@@ -38,7 +40,6 @@ public class CollectionsSort {
     }
 
     public static Collection<String> compareSort() {
-        final int ELEMENTS_COUNT = 50_000;
         long startTime;
         List<Integer> arrayList = new ArrayList();
         for (int i = 0; i < ELEMENTS_COUNT; i++) {
@@ -69,7 +70,6 @@ public class CollectionsSort {
         // больше ничего в голову не пришло (или куча if)
         Comparator<Pair> pcomp = new PairTimeComparator().thenComparing(new PairNameComparator());
         TreeSet<Pair> tmpSet = new TreeSet<>(pcomp);
-
         tmpSet.add(new Pair(t2, "minSort"));
         tmpSet.add(new Pair(t3, "collSort"));
         tmpSet.add(new Pair(t1, "mySort"));
@@ -79,8 +79,7 @@ public class CollectionsSort {
             tmpArr[i] = el.name;
             i++;
         }
-        Collection<String> result = List.of(tmpArr);
-        return result;
+        return List.of(tmpArr);
     }
 
     public static class Pair {
@@ -106,8 +105,8 @@ public class CollectionsSort {
     }
 
     public static void main(String[] args) {
-        Collection<Integer> test = new ArrayList<>(List.of(2, 6, 1, 8, 3, 0, 3));
-        Collection<Integer> test1 = new ArrayList<>();
+//        Collection<Integer> test = new ArrayList<>(List.of(2, 6, 1, 8, 3, 0, 3));
+//        Collection<Integer> test1 = new ArrayList<>();
 //        minSort(test1);
 //        System.out.println(test1);
         System.out.println(compareSort());

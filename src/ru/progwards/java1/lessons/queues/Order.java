@@ -4,10 +4,12 @@ package ru.progwards.java1.lessons.queues;
 public class Order implements Comparable<Order> {
     private double sum;
     private int num;
+    static  int orderNo = 1;
 
-    public Order(double sum, int num) {
+    public Order(double sum) {
         this.sum = sum;
-        this.num = num;
+        num = orderNo;
+        orderNo++;
     }
 
     public double getSum() {
@@ -19,8 +21,8 @@ public class Order implements Comparable<Order> {
     }
 
     public static void main(String[] args) {
-        Order order = new Order(100, 1);
-        Order ord1 = new Order(3, 3);
+        Order order = new Order(100);
+        Order ord1 = new Order(3);
 
         System.out.println();
     }
