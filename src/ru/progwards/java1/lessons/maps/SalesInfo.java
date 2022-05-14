@@ -40,7 +40,7 @@ public class SalesInfo {
         for (Object el : arrayList) {
             ArrayList tmpArrayList = (ArrayList) el;
             String tmpEl = (String) tmpArrayList.get(1);
-            Double tmpSum =  (Double) tmpArrayList.get(3);
+            Double tmpSum = (Double) tmpArrayList.get(3);
             map.putIfAbsent(tmpEl, (double) 0);
             map.put(tmpEl, map.get(tmpEl) + tmpSum);
         }
