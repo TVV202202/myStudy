@@ -13,10 +13,8 @@ public class FiboMapCache {
     }
     public BigDecimal fiboNumber(int n){
         if (cacheOn){
-            if (fiboCache.containsKey(n))
-                return fiboCache.get(n);
-            else
-                return fiboCache.putIfAbsent(n,fib(n));
+            if (!fiboCache.containsKey(n)) fiboCache.put(n,fib(n));
+            return fiboCache.get(n);
         }
         else{
             BigDecimal res=fib(n);
