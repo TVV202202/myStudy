@@ -10,7 +10,7 @@ public class SalesInfo {
 
     public void LoadFiles(String fileName) {
         try {
-            FileReader reader = new FileReader(fileName, Charset.forName("cp1251"));
+            FileReader reader = new FileReader(fileName);
             Scanner scanner = new Scanner(reader);
             while (scanner.hasNextLine()) {
                 ArrayList<Object> tmpString = new ArrayList<>(List.of(scanner.nextLine().split("\\,|\\;")));
