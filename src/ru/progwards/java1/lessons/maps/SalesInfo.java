@@ -16,6 +16,7 @@ public class SalesInfo {
                 ArrayList<Object> tmpString = new ArrayList<>(List.of(scanner.nextLine().split("\\,|\\;")));
                 if (tmpString.size() == 4) {
                     try {
+                        tmpString.set(1,((String) tmpString.get(1)).strip());
                         tmpString.set(2, Integer.valueOf(((String) tmpString.get(2)).strip()));
                         tmpString.set(3, Double.valueOf(((String) tmpString.get(3)).strip()));
                         arrayList.add(tmpString);
