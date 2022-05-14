@@ -13,11 +13,11 @@ public class SalesInfo {
             FileReader reader = new FileReader(fileName, Charset.forName("cp1251"));
             Scanner scanner = new Scanner(reader);
             while (scanner.hasNextLine()) {
-                ArrayList<Object> tmpString = new ArrayList<>(List.of(scanner.nextLine().split(",|;")));
+                ArrayList<Object> tmpString = new ArrayList<>(List.of(scanner.nextLine().split("\\,|\\;")));
                 if (tmpString.size() == 4) {
                     try {
-                        tmpString.set(2, Integer.valueOf((String) tmpString.get(2)));
-                        tmpString.set(3, Double.valueOf((String) tmpString.get(3)));
+                        tmpString.set(2, Integer.valueOf(((String) tmpString.get(2)).strip()));
+                        tmpString.set(3, Double.valueOf(((String) tmpString.get(3)).strip()));
                         arrayList.add(tmpString);
                     } catch (NumberFormatException ignored) {
                     }
@@ -28,7 +28,6 @@ public class SalesInfo {
         } catch (IOException e) {
             System.out.println("file not found");
         }
-
     }
 
     public int loadOrders(String fileName) {
@@ -70,7 +69,7 @@ public class SalesInfo {
 
     public static void main(String[] args) {
         SalesInfo salesInfo = new SalesInfo();
-        int num = salesInfo.loadOrders("123.csv");
+        int num = salesInfo.loadOrders("123.txt");
         System.out.println(num);
         System.out.println(salesInfo.getGoods());
         System.out.println(salesInfo.getCustomers());
