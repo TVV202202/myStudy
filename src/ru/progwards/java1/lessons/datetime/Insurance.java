@@ -62,6 +62,7 @@ public class Insurance {
     }
 
     public boolean checkValid(ZonedDateTime dateTime) {
+        if (dateTime.compareTo(start)<0) return false;
         return duration == null || Duration.between(start, dateTime).compareTo(duration) <= 0;
     }
 
@@ -77,12 +78,12 @@ public class Insurance {
     }
 
     public static void main(String[] args) {
-        String str = "2021-05-18T15:07:36.161103+03:00[Europe/Moscow]";
-        Duration duration1 = Duration.ofDays(366);
+        String str = "2022-05-26T23:20:10.906601+03:00[Europe/Moscow]";
+        //Duration duration1 = Duration.ofDays(366);
         Insurance test1=new Insurance(str, LONG);
 
-        test1.setDuration(duration1);
-        System.out.println(test1.duration);
+        //test1.setDuration(duration1);
+       //System.out.println(test1.duration);
         System.out.println(test1);
         //System.out.println(LocalDate.now());
     }
