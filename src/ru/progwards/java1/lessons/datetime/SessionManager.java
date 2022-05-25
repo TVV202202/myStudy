@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class SessionManager {
-    private Map<Integer, UserSession> sessions = new HashMap<>();
+    private static Map<Integer, UserSession> sessions = new HashMap<>();
     private int sessionValid;
 
     public SessionManager(int sessionValid) {
@@ -35,10 +35,11 @@ public class SessionManager {
     }
 
     public UserSession get(int sessionHandle) {
+        if (!sessions.containsKey(sessionHandle)) return null;
         LocalDateTime temp = sessions.get(sessionHandle).getLastAccess();
         Duration duration1 = Duration.between(LocalDateTime.now(), temp);
         Duration duration2 = Duration.between(temp.plusSeconds(sessionValid), temp);
-        if (!sessions.containsKey(sessionHandle) || duration1.compareTo(duration2) < 0) {
+        if (duration1.compareTo(duration2) < 0) {
             return null;
         } else {
             UserSession userSession = new UserSession(sessions.get(sessionHandle).getUserName());
@@ -70,26 +71,37 @@ public class SessionManager {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        UserSession test1 = new UserSession("test_1") ;
+
         SessionManager sessionManager = new SessionManager(1);
+
+        System.out.println(sessionManager.find("test1"));
+        System.out.println();
+        UserSession test1 = new UserSession("test_1") ;
+        sessionManager.add(test1);
+
         UserSession test2 = new UserSession("test_2") ;
         sessionManager.add(test2);
+
+        for (UserSession el: sessionManager.sessions.values())
+            System.out.println(el.getUserName());
+        System.out.println();
 
         System.out.println(sessionManager.get(test2.getSessionHandle()).getUserName());
         System.out.println(sessionManager.get(test2.getSessionHandle()).getUserName());
         System.out.println(sessionManager.get(test2.getSessionHandle()).getUserName());
-        Thread.sleep(1000);
+        Thread.sleep(1001);
         System.out.println(sessionManager.get(test2.getSessionHandle()));
+        System.out.println();
+        System.out.println(sessionManager.sessions.values());
+        System.out.println();
 
         UserSession test3 = new UserSession("test_3") ;
         Thread.sleep(500);
         sessionManager.add(test3);
-        for (UserSession el: sessionManager.sessions.values())
-            System.out.println(el.getUserName());
-        System.out.println();
         UserSession test4 = new UserSession("test_4") ;
         Thread.sleep(500);
         sessionManager.add(test4);
+
         for (UserSession el: sessionManager.sessions.values())
             System.out.println(el.getUserName());
         System.out.println();
@@ -100,6 +112,6 @@ public class SessionManager {
         System.out.println();
         for (UserSession el: sessionManager.sessions.values())
             System.out.println(el.getUserName());
-
+        System.out.println("tst");
     }
 }

@@ -15,7 +15,7 @@ public class UserSession {
         this.userName = userName;
         lastAccess = LocalDateTime.now();
         ZoneOffset zoneOffset = ZoneOffset.of("+00:00");
-        sessionHandle = new Random(lastAccess.toEpochSecond(zoneOffset)).nextInt();
+        sessionHandle = new Random().nextInt();
     }
     public void updateLastAccess(){
         lastAccess = LocalDateTime.now();

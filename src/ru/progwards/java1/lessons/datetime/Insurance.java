@@ -23,7 +23,7 @@ public class Insurance {
             LocalDate ld = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(strStart.substring(0,10)));
             start = ld.atStartOfDay(ZoneId.systemDefault());
         } else if (style == FormatStyle.LONG) {
-            LocalDateTime localDateTime = LocalDateTime.from(DateTimeFormatter.ISO_LOCAL_DATE_TIME.parse(strStart.substring(0,26)));
+            LocalDateTime localDateTime = LocalDateTime.from(DateTimeFormatter.ISO_LOCAL_DATE_TIME.parse(strStart.substring(0,19)));
             start = localDateTime.atZone(ZoneId.systemDefault());
         } else
             start = ZonedDateTime.from(DateTimeFormatter.ISO_ZONED_DATE_TIME.parse(strStart));
@@ -79,7 +79,7 @@ public class Insurance {
     public static void main(String[] args) {
         String str = "2021-05-18T15:07:36.161103+03:00[Europe/Moscow]";
         Duration duration1 = Duration.ofDays(366);
-        Insurance test1=new Insurance(str, SHORT);
+        Insurance test1=new Insurance(str, LONG);
 
         test1.setDuration(duration1);
         System.out.println(test1.duration);
