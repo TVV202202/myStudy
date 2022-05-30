@@ -50,10 +50,7 @@ public class OrderProcessor {
         try{
             int result = 0;
             List<Path> pathList = createFilesList(startPath);
-            if (errorsCount != 0) {
-                orderList.clear();
-                return errorsCount;
-            }
+
             for (Path el : pathList) {
                 Order order = new Order();
                 String fileName = String.valueOf(el.getFileName());
@@ -78,7 +75,7 @@ public class OrderProcessor {
                 // добавим все заказы
                 //orderList.add(order);
             }
-            return 0;
+            return errorsCount;
         } catch (IOException ignored){
             return errorsCount;
         }
