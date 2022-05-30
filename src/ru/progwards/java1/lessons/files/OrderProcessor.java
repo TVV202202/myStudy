@@ -56,7 +56,7 @@ public class OrderProcessor {
                 order.setShopId(fileName.substring(0, 3));
                 order.setOrderId(fileName.substring(4, 10));
                 order.setCustomerId(fileName.substring(11, 15));
-                String tmp = Files.getAttribute(el, "lastModifiedTime").toString().substring(0, 20);
+                String tmp = Files.getAttribute(el, "lastModifiedTime").toString().substring(0, 21);
 
                 order.setDatetime(LocalDateTime.from(DateTimeFormatter.ISO_LOCAL_DATE_TIME.parse(tmp)));
                 order.setItems(itemsList(el));
