@@ -1,12 +1,12 @@
 package ru.progwards.java1.lessons.files;
 
 public class OrderItem {
-    public String goodsName; // - наименование товара
+    public String googsName; // - наименование товара
     public int count; // - количество
     public double price; // - цена за единицу
 
     public OrderItem(String goodsName, int count, double price) {
-        this.goodsName = goodsName;
+        this.googsName = goodsName;
         this.count = count;
         this.price = price;
     }
@@ -14,7 +14,7 @@ public class OrderItem {
     @Override
     public String toString() {
         return "OrderItem{" +
-                "goodsName='" + goodsName + '\'' +
+                "googsName='" + googsName + '\'' +
                 ", count=" + count +
                 ", price=" + price +
                 '}';

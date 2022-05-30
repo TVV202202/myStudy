@@ -28,39 +28,53 @@ public class FindDuplicates {
     }
 
 
-    public static boolean compare(Path name1, Path name2) throws IOException { // реализовать сравнение файлов по имени/расш, дате-времени посл изм, размеру, содержимому
-        boolean atr1 = name1.getFileName().equals(name2.getFileName());
-        boolean atr2 = Files.getAttribute(name1, "lastModifiedTime").equals(Files.getAttribute(name2, "lastModifiedTime"));
-        boolean atr3 = Files.getAttribute(name1, "size").equals(Files.getAttribute(name2, "size"));
-        boolean atr4 = eqInside(name1, name2);
-        return atr1 && atr2 && atr3 && atr4;
+    public static boolean compare(Path name1, Path name2) { // реализовать сравнение файлов по имени/расш, дате-времени посл изм, размеру, содержимому
+        try {
+            boolean atr1 = name1.getFileName().equals(name2.getFileName());
+            boolean atr2 = Files.getAttribute(name1, "lastModifiedTime").equals(Files.getAttribute(name2, "lastModifiedTime"));
+            boolean atr3 = Files.getAttribute(name1, "size").equals(Files.getAttribute(name2, "size"));
+            boolean atr4 = eqInside(name1, name2);
+            return atr1 && atr2 && atr3 && atr4;
+        }catch (IOException e){
+            return false;
+        }
+
     }
 
-    public static boolean eqInside(Path name1, Path name2) throws IOException {
-        String in1 = Arrays.toString(Files.readAllBytes(name1));
-        String in2 = Arrays.toString(Files.readAllBytes(name2));
-        return in1.equals(in2);
+    public static boolean eqInside(Path name1, Path name2)  {
+        try {
+            String in1 = Arrays.toString(Files.readAllBytes(name1));
+            String in2 = Arrays.toString(Files.readAllBytes(name2));
+            return in1.equals(in2);
+        } catch (IOException e){
+            return false;
+        }
+
     }
 
-    public static List<List<String>> findDuplicates(String startPath) throws IOException {
+    public static List<List<String>> findDuplicates(String startPath)  {
         List<List<String>> lists = new ArrayList<>();
-        Deque<Path> filesList = createFilesList(startPath);
-        Path file;
-        while ((file = filesList.poll()) != null) {
-            List<String> listFiles = new ArrayList<>();
-            listFiles.add(String.valueOf(file));
-            for (Path el : filesList) {
-                if (compare(file, el)) {
-                    listFiles.add(String.valueOf(el));
-                    filesList.poll();
+        try {
+            Deque<Path> filesList = createFilesList(startPath);
+            Path file;
+            while ((file = filesList.poll()) != null) {
+                List<String> listFiles = new ArrayList<>();
+                listFiles.add(String.valueOf(file));
+                for (Path el : filesList) {
+                    if (compare(file, el)) {
+                        listFiles.add(String.valueOf(el));
+                        filesList.poll();
+                    }
                 }
+                if (listFiles.size() > 1) lists.add(listFiles);
             }
-            if (listFiles.size() > 1) lists.add(listFiles);
+        } catch (IOException e){
+
         }
         return lists;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         //System.out.println(createFilesList("D:\\Test"));
         List<List<String>> test = findDuplicates("D:\\Test");
 

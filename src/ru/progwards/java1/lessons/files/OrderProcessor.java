@@ -91,7 +91,7 @@ public class OrderProcessor {
             result.sort(new Comparator<OrderItem>() {
                 @Override
                 public int compare(OrderItem o1, OrderItem o2) {
-                    return o1.goodsName.compareTo(o2.goodsName);
+                    return o1.googsName.compareTo(o2.googsName);
                 }
             });
         }
@@ -124,8 +124,8 @@ public class OrderProcessor {
         loadOrders(null, null, null);
         for (Order order : orderList) {
             for (OrderItem orderItem : order.items) {
-                statisticsByGoodsMap.putIfAbsent(orderItem.goodsName, (double) 0);
-                statisticsByGoodsMap.put(orderItem.goodsName, statisticsByGoodsMap.get(orderItem.goodsName) + orderItem.count * orderItem.price);
+                statisticsByGoodsMap.putIfAbsent(orderItem.googsName, (double) 0);
+                statisticsByGoodsMap.put(orderItem.googsName, statisticsByGoodsMap.get(orderItem.googsName) + orderItem.count * orderItem.price);
             }
         }
         return statisticsByGoodsMap;
