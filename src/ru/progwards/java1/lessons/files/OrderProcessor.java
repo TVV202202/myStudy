@@ -50,14 +50,13 @@ public class OrderProcessor {
         try{
             int result = 0;
             List<Path> pathList = createFilesList(startPath);
-
             for (Path el : pathList) {
                 Order order = new Order();
                 String fileName = String.valueOf(el.getFileName());
                 order.setShopId(fileName.substring(0, 3));
                 order.setOrderId(fileName.substring(4, 10));
                 order.setCustomerId(fileName.substring(11, 15));
-                String tmp = Files.getAttribute(el, "lastModifiedTime").toString().substring(0, 27);
+                String tmp = Files.getAttribute(el, "lastModifiedTime").toString().substring(0, 20);
 
                 order.setDatetime(LocalDateTime.from(DateTimeFormatter.ISO_LOCAL_DATE_TIME.parse(tmp)));
                 order.setItems(itemsList(el));
