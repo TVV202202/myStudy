@@ -1,7 +1,7 @@
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -247,36 +247,39 @@ public class Test {
                     '}';
         }
 
-        User (Integer id, String name) {
+        User(Integer id, String name) {
             this.id = id;
             this.name = name;
         }
     }
-    public static TreeSet<User> createSet(){
+
+    public static TreeSet<User> createSet() {
         TreeSet<User> users = new TreeSet<>(new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
                 return -Integer.compare(o1.id, o2.id);
             }
         });
-        users.add(new User(3,"wefre"));
-        users.add(new User(5,"tyter"));
-        users.add(new User(1,"lkyuop"));
-        users.add(new User(8,"lkoasap"));
-        users.add(new User(2,"qew"));
+        users.add(new User(3, "wefre"));
+        users.add(new User(5, "tyter"));
+        users.add(new User(1, "lkyuop"));
+        users.add(new User(8, "lkoasap"));
+        users.add(new User(2, "qew"));
         return users;
     }
+
     static void dequeueTest() {
         ArrayDeque deque = new ArrayDeque<>();
 
         for (int i = 0; i <= 10; i++) {
             deque.offer(i);
-            if (i%2 == 0)
+            if (i % 2 == 0)
                 deque.poll();
         }
 
         System.out.println(deque);
     }
+
     static void pqTest() {
         PriorityQueue pQueue = new PriorityQueue<>();
         pQueue.offer(10);
@@ -285,88 +288,84 @@ public class Test {
         pQueue.offer(3);
         System.out.println(pQueue);
     }
-    static ArrayDeque<Integer> array2queue(int[] a){
+
+    static ArrayDeque<Integer> array2queue(int[] a) {
         ArrayDeque<Integer> deque = new ArrayDeque<>();
-        for (int el: a){
+        for (int el : a) {
             deque.offer(el);
         }
         return deque;
     }
-    static int sumLastAndFirst(ArrayDeque<Integer> deque){
-        if (deque.peekFirst()!=null){
-            return deque.peekFirst()+deque.peekLast();
-        }
-        else{
+
+    static int sumLastAndFirst(ArrayDeque<Integer> deque) {
+        if (deque.peekFirst() != null) {
+            return deque.peekFirst() + deque.peekLast();
+        } else {
             return 0;
         }
     }
-    static HashMap<Integer, String> a2map(int[] akey, String[] aval){
+
+    static HashMap<Integer, String> a2map(int[] akey, String[] aval) {
         HashMap<Integer, String> result = new HashMap<>();
-        for (int i=0; i<akey.length; i++) result.put(akey[i], aval[i]);
+        for (int i = 0; i < akey.length; i++) result.put(akey[i], aval[i]);
         return result;
     }
-    static int fillHoles(Map<Integer, String> map, int size){
-        int result=0;
-        for (int i=1; i<=size; i++){
-            if (map.putIfAbsent(i, "Число "+ i)==null) result++;
+
+    static int fillHoles(Map<Integer, String> map, int size) {
+        int result = 0;
+        for (int i = 1; i <= size; i++) {
+            if (map.putIfAbsent(i, "Число " + i) == null) result++;
         }
         return result;
     }
 
-    static void checkAndAdd(TreeMap<Integer, String> map, Integer key, String value){
-        if (!map.isEmpty() && key> map.firstKey() && key<map.lastKey() && !map.containsKey(key))
-            map.put(key,value);
+    static void checkAndAdd(TreeMap<Integer, String> map, Integer key, String value) {
+        if (!map.isEmpty() && key > map.firstKey() && key < map.lastKey() && !map.containsKey(key))
+            map.put(key, value);
     }
-    static  Instant createInstant(){
+
+    static Instant createInstant() {
         //1 января 2020 года, 15 часов и одна наносекунда по Московскому времени
-        ZonedDateTime zonedDateTime =ZonedDateTime.of(2020, 01, 01, 15, 0,0,1, ZoneId.of("Europe/Moscow"));
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(2020, 01, 01, 15, 0, 0, 1, ZoneId.of("Europe/Moscow"));
         Instant instant = zonedDateTime.toInstant();
         return instant;
     }
-    static ZonedDateTime parseZDT(String str){
+
+    static ZonedDateTime parseZDT(String str) {
         // "01.01.2020 16:27:14.444 +0300 Moscow Standard Time"
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss.SSS Z zzzz", Locale.forLanguageTag("En/en"));
         ZonedDateTime zdt = ZonedDateTime.parse(str, formatter);
         return zdt;
     }
+
+    static String createFolder(String name) {
+        File f = new File(name);
+        f.mkdir();
+        Path path1 = Paths.get(name);
+        return path1.toAbsolutePath().getParent().getParent().toString();
+    }
+
+    static boolean replaceF(String name) {
+        try {
+            Path path = Paths.get(name);
+            String allSymb = Files.readString(path);
+            StringBuilder newAllSymb = new StringBuilder();
+            for (int i = 0; i < allSymb.length(); i++) {
+                if (allSymb.charAt(i) == 'F') {
+                    newAllSymb.append('f');
+                } else
+                    newAllSymb.append(allSymb.charAt(i));
+            }
+            Files.writeString(Paths.get(name), newAllSymb.toString());
+            return true;
+        } catch (Exception e ){
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
-        //System.out.println(sqr(5));
-        //System.out.println(lineCount("11.txt"));
-//        int[] q = {1,3,5,7,9,2,4};
-//        System.out.println(a2set(q));
-        //iSetTest();
-//        Square sq = new Square(5.0);
-//        Round r = new Round(6);
-//        Figure fog = new Figure();
-//        System.out.println(figDetect(null));
-//        ArrayDeque<Integer> test = new ArrayDeque<>();
-//        test.offerFirst(1);
-//        test.offerLast(4);
-//        test.offerLast(6);
-//        test.offerLast(9);
-//        System.out.println(sumLastAndFirst(test));
-//        int akey1[] = {9, 7, 5};
-//        String aval1[] = {"Вася", "Петя", "Даша"};
-//        Map<Integer,String> map = a2map(akey1,aval1);
-//        TreeMap<Integer, String> treeMap = new TreeMap<>(map);
-//        fillHoles(treeMap,10);
-//        treeMap.remove(6);
-//        checkAndAdd(treeMap,0,"erery");
-//        checkAndAdd(treeMap,11,"446");
-//        checkAndAdd(treeMap,6,"hfh");
-//        System.out.println(treeMap);
 
-//        TreeMap<Integer, String> map = new TreeMap<>();
-//        checkAndAdd(map, 0, "Zero");
-//        checkAndAdd(map, 0, "Zero");
-//        System.out.println(map);
-//        ZoneId zid1 = ZoneId.of("Europe/Moscow");
-//        System.out.println(zid1.getRules().getOffset(Instant.now()));
-        //"dd.MM.yyyy HH:mm:ss.SSS"
-        //"'От''езд' - EEEE dd MMMM 'в' ha"
-        //"yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'"
-        System.out.println(parseZDT("01.01.2020 16:27:14.444 +0300 Moscow Standard Time"));
-
+        boolean t = replaceF("1.txt");
     }
 }
 

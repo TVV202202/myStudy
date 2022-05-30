@@ -21,7 +21,9 @@ public class Profiler {
                 stackItems.get(i).durationLast=(int) (new Date().getTime() - stackItems.get(i).startTime);
                 StatisticInfo statisticInfo = new StatisticInfo(name);
                 statisticInfo.fullTime = stackItems.get(i).durationLast;
+                if (i!= stackItems.size()-1){
 
+                }
                 //statisticInfo.selfTime = statisticInfo.fullTime - (i-1>=0 ? stackItems.get(i-1).durationLast : 0);
                 //duration = tempDeque.pollLast().durationLast;
                 //statisticInfo.selfTime = statisticInfo.fullTime - (int) Objects.requireNonNull(tempDeque.pollLast()).durationLast;
