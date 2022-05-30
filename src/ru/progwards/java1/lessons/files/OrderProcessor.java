@@ -67,7 +67,7 @@ public class OrderProcessor {
                 }
                 order.setSum(sumOrder);
                 // учитываем даты
-                if (shopId == null || order.shopId.equals(shopId))
+                if (order.items.size()!=0 || shopId == null || order.shopId.equals(shopId))
                     if (start == null || LocalDate.from(order.datetime).compareTo(start) == 1)
                         if (finish == null || LocalDate.from(order.datetime).compareTo(finish) == -1)
                             orderList.add(order);
@@ -75,7 +75,7 @@ public class OrderProcessor {
                 // добавим все заказы
                 //orderList.add(order);
             }
-            return errorsCount;
+            return 0;
         } catch (IOException ignored){
             return errorsCount;
         }
@@ -89,10 +89,19 @@ public class OrderProcessor {
             for (String line : lines) {
                 String[] lineList = line.split(",|;");
                 //  по уму надо бы проверить на "правильность" строк в файле через исключения
+                if (lineList.length!=3) {
+                    result.clear();
+                    return result;
+                }
                 OrderItem orderItem = new OrderItem();
                 orderItem.setGoogsName(lineList[0]);
-                orderItem.setCount(Integer.parseInt(lineList[1]));
-                orderItem.setPrice(Double.parseDouble(lineList[2]));
+                try{
+                    orderItem.setCount(Integer.parseInt(lineList[1]));
+                    orderItem.setPrice(Double.parseDouble(lineList[2]));
+                } catch (NumberFormatException e){
+                    result.clear();
+                    return result;
+                }
                 result.add(orderItem);
                 result.sort(new Comparator<OrderItem>() {
                     @Override
@@ -108,7 +117,11 @@ public class OrderProcessor {
     }
 
     public List<Order> process(String shopId) {
-        List<Order> orders = new ArrayList<>(orderList);
+        //loadOrders(null, null, shopId);
+        List<Order> orders = new ArrayList<>();
+        for (Order order:orderList){
+            if (order.shopId.equals(shopId)) orders.add(order);
+        }
         orders.sort(new Comparator<Order>() {
             @Override
             public int compare(Order o1, Order o2) {
@@ -120,7 +133,7 @@ public class OrderProcessor {
 
     public Map<String, Double> statisticsByShop() {
         Map<String, Double> statisticsByShopMap = new TreeMap<>();
-        loadOrders(null, null, null);
+        //loadOrders(null, null, null);
         for (Order order : orderList) {
             statisticsByShopMap.putIfAbsent(order.shopId, (double) 0);
             statisticsByShopMap.put(order.shopId, statisticsByShopMap.get(order.shopId) + order.sum);
@@ -130,7 +143,7 @@ public class OrderProcessor {
 
     public Map<String, Double> statisticsByGoods() {
         Map<String, Double> statisticsByGoodsMap = new TreeMap<>();
-        loadOrders(null, null, null);
+        //loadOrders(null, null, null);
         for (Order order : orderList) {
             for (OrderItem orderItem : order.items) {
                 statisticsByGoodsMap.putIfAbsent(orderItem.googsName, (double) 0);
@@ -142,7 +155,7 @@ public class OrderProcessor {
 
     public Map<LocalDate, Double> statisticsByDay() {
         Map<LocalDate, Double> statisticsByDayMap = new TreeMap<>();
-        loadOrders(null, null, null);
+        //loadOrders(null, null, null);
         for (Order order : orderList) {
             LocalDate date = LocalDate.from(order.datetime);
             statisticsByDayMap.putIfAbsent(date, (double) 0);
@@ -156,15 +169,18 @@ public class OrderProcessor {
         OrderProcessor orderProcessor = new OrderProcessor(name);
         LocalDate start = LocalDate.parse("2022-05-29");
         LocalDate finish = LocalDate.parse("2022-05-30");
-        int test = orderProcessor.loadOrders(start, finish, "qqq");
-
-//        for (Order el: orderProcessor.orderList )
-//            for (OrderItem orderItem: el.items)
-//                System.out.println(orderItem.toString());
+        int test = orderProcessor.loadOrders(null, null, null);
+//        System.out.println(test);
+//        for (Order el: orderProcessor.process(null) )
+//            //for (OrderItem orderItem: el.items)
+//                System.out.println(el.toString());
 //        List<Order> tstList = orderProcessor.process("qqq");
 //        for (Order el : tstList)
 //            for (OrderItem orderItem : el.items)
 //                System.out.println(orderItem.toString());
-        System.out.println(orderProcessor.statisticsByDay());
+        for (Map.Entry<String, Double> goods: orderProcessor.statisticsByGoods().entrySet()){
+            System.out.println(goods);
+        }
+ //       System.out.println(orderProcessor.statisticsByGoods());
     }
 }

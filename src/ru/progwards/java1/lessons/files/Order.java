@@ -35,4 +35,13 @@ public class Order {
     public void setSum(double sum) {
         this.sum = sum;
     }
+
+    @Override
+    public String toString() {
+        return  "shopId='" + shopId + '\'' +
+                ", orderId='" + orderId + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", datetime=" + datetime +
+                ", items=" + "\n" + items;
+    }
 }
