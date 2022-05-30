@@ -46,57 +46,66 @@ public class OrderProcessor {
         return resultList;
     }
 
-    public int loadOrders(LocalDate start, LocalDate finish, String shopId) throws IOException {
-        int result = 0;
-        List<Path> pathList = createFilesList(startPath);
-        if (errorsCount != 0) {
-            orderList.clear();
+    public int loadOrders(LocalDate start, LocalDate finish, String shopId) {
+        try{
+            int result = 0;
+            List<Path> pathList = createFilesList(startPath);
+            if (errorsCount != 0) {
+                orderList.clear();
+                return errorsCount;
+            }
+            for (Path el : pathList) {
+                Order order = new Order();
+                String fileName = String.valueOf(el.getFileName());
+                order.setShopId(fileName.substring(0, 3));
+                order.setOrderId(fileName.substring(4, 10));
+                order.setCustomerId(fileName.substring(11, 15));
+                String tmp = Files.getAttribute(el, "lastModifiedTime").toString().substring(0, 27);
+
+                order.setDatetime(LocalDateTime.from(DateTimeFormatter.ISO_LOCAL_DATE_TIME.parse(tmp)));
+                order.setItems(itemsList(el));
+                double sumOrder = 0;
+                for (OrderItem item : order.items) {
+                    sumOrder += item.count * item.price;
+                }
+                order.setSum(sumOrder);
+                // учитываем даты
+                if (shopId == null || order.shopId.equals(shopId))
+                    if (start == null || LocalDate.from(order.datetime).compareTo(start) == 1)
+                        if (finish == null || LocalDate.from(order.datetime).compareTo(finish) == -1)
+                            orderList.add(order);
+
+                // добавим все заказы
+                //orderList.add(order);
+            }
+            return 0;
+        } catch (IOException ignored){
             return errorsCount;
         }
-        for (Path el : pathList) {
-            Order order = new Order();
-            String fileName = String.valueOf(el.getFileName());
-            order.setShopId(fileName.substring(0, 3));
-            order.setOrderId(fileName.substring(4, 10));
-            order.setCustomerId(fileName.substring(11, 15));
-            String tmp = Files.getAttribute(el, "lastModifiedTime").toString().substring(0, 27);
 
-            order.setDatetime(LocalDateTime.from(DateTimeFormatter.ISO_LOCAL_DATE_TIME.parse(tmp)));
-            order.setItems(itemsList(el));
-            double sumOrder = 0;
-            for (OrderItem item : order.items) {
-                sumOrder += item.count * item.price;
-            }
-            order.setSum(sumOrder);
-            // учитываем даты
-            if (shopId == null || order.shopId.equals(shopId))
-                if (start == null || LocalDate.from(order.datetime).compareTo(start) == 1)
-                    if (finish == null || LocalDate.from(order.datetime).compareTo(finish) == -1)
-                        orderList.add(order);
-
-            // добавим все заказы
-            //orderList.add(order);
-        }
-        return 0;
     }
 
-    public List<OrderItem> itemsList(Path path) throws IOException {
+    public List<OrderItem> itemsList(Path path) {
         List<OrderItem> result = new ArrayList<>();
-        List<String> lines = Files.readAllLines(path);
-        for (String line : lines) {
-            String[] lineList = line.split(",|;");
-            //  по уму надо бы проверить на "правильность" строк в файле через исключения
-            OrderItem orderItem = new OrderItem();
-            orderItem.setGoogsName(lineList[0]);
-            orderItem.setCount(Integer.parseInt(lineList[1]));
-            orderItem.setPrice(Double.parseDouble(lineList[2]));
-            result.add(orderItem);
-            result.sort(new Comparator<OrderItem>() {
-                @Override
-                public int compare(OrderItem o1, OrderItem o2) {
-                    return o1.googsName.compareTo(o2.googsName);
-                }
-            });
+        try{
+            List<String> lines = Files.readAllLines(path);
+            for (String line : lines) {
+                String[] lineList = line.split(",|;");
+                //  по уму надо бы проверить на "правильность" строк в файле через исключения
+                OrderItem orderItem = new OrderItem();
+                orderItem.setGoogsName(lineList[0]);
+                orderItem.setCount(Integer.parseInt(lineList[1]));
+                orderItem.setPrice(Double.parseDouble(lineList[2]));
+                result.add(orderItem);
+                result.sort(new Comparator<OrderItem>() {
+                    @Override
+                    public int compare(OrderItem o1, OrderItem o2) {
+                        return o1.googsName.compareTo(o2.googsName);
+                    }
+                });
+            }
+        } catch (IOException ignored){
+
         }
         return result;
     }
@@ -112,7 +121,7 @@ public class OrderProcessor {
         return orders;
     }
 
-    public Map<String, Double> statisticsByShop() throws IOException {
+    public Map<String, Double> statisticsByShop() {
         Map<String, Double> statisticsByShopMap = new TreeMap<>();
         loadOrders(null, null, null);
         for (Order order : orderList) {
@@ -122,7 +131,7 @@ public class OrderProcessor {
         return statisticsByShopMap;
     }
 
-    public Map<String, Double> statisticsByGoods() throws IOException {
+    public Map<String, Double> statisticsByGoods() {
         Map<String, Double> statisticsByGoodsMap = new TreeMap<>();
         loadOrders(null, null, null);
         for (Order order : orderList) {
@@ -134,7 +143,7 @@ public class OrderProcessor {
         return statisticsByGoodsMap;
     }
 
-    public Map<LocalDate, Double> statisticsByDay() throws IOException {
+    public Map<LocalDate, Double> statisticsByDay() {
         Map<LocalDate, Double> statisticsByDayMap = new TreeMap<>();
         loadOrders(null, null, null);
         for (Order order : orderList) {
@@ -145,7 +154,7 @@ public class OrderProcessor {
         return statisticsByDayMap;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
         String name = "D:\\Test2";
         OrderProcessor orderProcessor = new OrderProcessor(name);
         LocalDate start = LocalDate.parse("2022-05-29");
