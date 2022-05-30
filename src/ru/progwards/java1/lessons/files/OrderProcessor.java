@@ -86,7 +86,10 @@ public class OrderProcessor {
         for (String line : lines) {
             String[] lineList = line.split(",|;");
             //  по уму надо бы проверить на "правильность" строк в файле через исключения
-            OrderItem orderItem = new OrderItem(lineList[0], Integer.parseInt(lineList[1]), Double.parseDouble(lineList[2]));
+            OrderItem orderItem = new OrderItem();
+            orderItem.setGoogsName(lineList[0]);
+            orderItem.setCount(Integer.parseInt(lineList[1]));
+            orderItem.setPrice(Double.parseDouble(lineList[2]));
             result.add(orderItem);
             result.sort(new Comparator<OrderItem>() {
                 @Override

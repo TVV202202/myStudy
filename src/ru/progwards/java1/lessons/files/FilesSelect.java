@@ -30,22 +30,27 @@ public class FilesSelect {
         return resultList;
     }
 
-    public static void selectFiles(String inFolder, String outFolder, List<String> keys) throws IOException {
+    public static void selectFiles(String inFolder, String outFolder, List<String> keys) {
         Path path = Paths.get(outFolder);
-        if (!Files.exists(path)) Files.createDirectory(path);
-        List<Path> pathList = createFilesList(inFolder);
-        for (String key : keys) { // по ключам
-            for (Path el : pathList) { // по списку файлов
-                if (Files.readString(el).contains(key)) {
-                    Path dstPath = path.resolve(key);
-                    if (!Files.exists(dstPath)) Files.createDirectory(dstPath);
-                    Files.copy(el, dstPath.resolve(el.getFileName()), StandardCopyOption.REPLACE_EXISTING);
+        try{
+            if (!Files.exists(path)) Files.createDirectory(path);
+            List<Path> pathList = createFilesList(inFolder);
+            for (String key : keys) { // по ключам
+                for (Path el : pathList) { // по списку файлов
+                    if (Files.readString(el).contains(key)) {
+                        Path dstPath = path.resolve(key);
+                        if (!Files.exists(dstPath)) Files.createDirectory(dstPath);
+                        Files.copy(el, dstPath.resolve(el.getFileName()), StandardCopyOption.REPLACE_EXISTING);
+                    }
                 }
             }
+        } catch (IOException ignored){
+
         }
+
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         selectFiles("D:\\Test", "D:\\Test1", List.of("qwert", "aaa", "123", "ytytry"));
     }
 }

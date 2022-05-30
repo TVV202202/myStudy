@@ -7,8 +7,8 @@ import java.util.*;
 
 public class FindDuplicates {
 
-    public static ArrayDeque<Path> createFilesList(String startPath) throws IOException {
-        ArrayDeque<Path> resultList = new ArrayDeque<>();
+    public static List<Path> createFilesList(String startPath) throws IOException {
+        List<Path> resultList = new ArrayList<>();
         Path dir = Paths.get(startPath);
         PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:**");
         Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
@@ -55,20 +55,21 @@ public class FindDuplicates {
     public static List<List<String>> findDuplicates(String startPath)  {
         List<List<String>> lists = new ArrayList<>();
         try {
-            Deque<Path> filesList = createFilesList(startPath);
-            Path file;
-            while ((file = filesList.poll()) != null) {
+            List<Path> filesList = createFilesList(startPath);
+            for(int i=0;i<filesList.size();i++){
                 List<String> listFiles = new ArrayList<>();
+                Path file=filesList.get(i);
                 listFiles.add(String.valueOf(file));
-                for (Path el : filesList) {
-                    if (compare(file, el)) {
-                        listFiles.add(String.valueOf(el));
-                        filesList.poll();
+                for(int j=i+1;j<filesList.size();j++){
+                    if(compare(filesList.get(i),filesList.get(j))){
+                        listFiles.add(String.valueOf(filesList.get(j)));
+                        filesList.remove(j);
+                        //j--;
                     }
                 }
                 if (listFiles.size() > 1) lists.add(listFiles);
             }
-        } catch (IOException e){
+        } catch (IOException ignored){
 
         }
         return lists;

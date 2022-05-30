@@ -5,9 +5,15 @@ public class OrderItem {
     public int count; // - количество
     public double price; // - цена за единицу
 
-    public OrderItem(String goodsName, int count, double price) {
-        this.googsName = goodsName;
+    public void setGoogsName(String googsName) {
+        this.googsName = googsName;
+    }
+
+    public void setCount(int count) {
         this.count = count;
+    }
+
+    public void setPrice(double price) {
         this.price = price;
     }
 
