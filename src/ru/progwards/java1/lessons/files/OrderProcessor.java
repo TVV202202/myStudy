@@ -119,7 +119,6 @@ public class OrderProcessor {
     }
 
     public List<Order> process(String shopId) {
-        //loadOrders(null, null, shopId);
         List<Order> orders = new ArrayList<>();
         for (Order order:orderList){
             if (order.shopId.equals(shopId) || shopId==null) orders.add(order);
@@ -135,7 +134,6 @@ public class OrderProcessor {
 
     public Map<String, Double> statisticsByShop() {
         Map<String, Double> statisticsByShopMap = new TreeMap<>();
-        //loadOrders(null, null, null);
         for (Order order : orderList) {
             statisticsByShopMap.putIfAbsent(order.shopId, (double) 0);
             statisticsByShopMap.put(order.shopId, statisticsByShopMap.get(order.shopId) + order.sum);
@@ -145,7 +143,6 @@ public class OrderProcessor {
 
     public Map<String, Double> statisticsByGoods() {
         Map<String, Double> statisticsByGoodsMap = new TreeMap<>();
-        //loadOrders(null, null, null);
         for (Order order : orderList) {
             for (OrderItem orderItem : order.items) {
                 statisticsByGoodsMap.putIfAbsent(orderItem.googsName, (double) 0);
@@ -157,7 +154,6 @@ public class OrderProcessor {
 
     public Map<LocalDate, Double> statisticsByDay() {
         Map<LocalDate, Double> statisticsByDayMap = new TreeMap<>();
-        //loadOrders(null, null, null);
         for (Order order : orderList) {
             LocalDate date = LocalDate.from(order.datetime);
             statisticsByDayMap.putIfAbsent(date, (double) 0);
