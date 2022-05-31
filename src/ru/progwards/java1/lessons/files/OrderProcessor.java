@@ -20,7 +20,7 @@ public class OrderProcessor {
         this.startPath = startPath;
     }
 
-    public static List<Path> createFilesList(String inFolder) throws IOException {
+    public static List<Path> createFilesList(LocalDate start, LocalDate finish, String inFolder) throws IOException {
         // создаем список всех файлов с нужным форматом и названием
         errorsCount = 0;
         List<Path> resultList = new ArrayList<>();
@@ -29,10 +29,14 @@ public class OrderProcessor {
         Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) {
-                if (pathMatcher.matches(path))
-                    resultList.add(path);
-                else
-                    errorsCount++;
+                // проверяем соответствие даты здесь
+                LocalDateTime localDateTime = attrs.lastModifiedTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                if (start == null || LocalDate.from(localDateTime).compareTo(start) > -1)
+                    if (finish == null || LocalDate.from(localDateTime).compareTo(finish) < 1)
+                        if (pathMatcher.matches(path))
+                            resultList.add(path);
+                        else
+                            errorsCount++;
                 return FileVisitResult.CONTINUE;
             }
 
@@ -48,7 +52,7 @@ public class OrderProcessor {
     public int loadOrders(LocalDate start, LocalDate finish, String shopId) {
         try{
             int result = 0;
-            List<Path> pathList = createFilesList(startPath);
+            List<Path> pathList = createFilesList(start, finish,startPath);
             for (Path el : pathList) {
                 Order order = new Order();
                 String fileName = String.valueOf(el.getFileName());
@@ -63,7 +67,7 @@ public class OrderProcessor {
                 }
                 order.setSum(sumOrder);
                 // учитываем даты
-                if (order.items.size()!=0)
+                if (order.items.size()!=0) // если в файле не пойми что или ничего, то не добавляем этот файл
                     if (shopId == null || order.shopId.equals(shopId))
                         if (start == null || LocalDate.from(order.datetime).compareTo(start) > -1)
                             if (finish == null || LocalDate.from(order.datetime).compareTo(finish) < 1)
@@ -73,7 +77,8 @@ public class OrderProcessor {
                 //orderList.add(order);
             }
             return errorsCount;
-        } catch (IOException ignored){
+        } catch (IOException e){
+            //orderList.clear();
             return errorsCount;
         }
 
@@ -166,7 +171,7 @@ public class OrderProcessor {
         OrderProcessor orderProcessor = new OrderProcessor(name);
         LocalDate start = LocalDate.parse("2022-05-31");
         LocalDate finish = LocalDate.parse("2022-05-31");
-        int test = orderProcessor.loadOrders(null, null, null);
+        int test = orderProcessor.loadOrders(LocalDate.of(2020, Month.JANUARY, 1), LocalDate.of(2020, Month.JANUARY, 9), null);
         System.out.println(test);
         for (Order el: orderProcessor.process(null) )
             //for (OrderItem orderItem: el.items)
