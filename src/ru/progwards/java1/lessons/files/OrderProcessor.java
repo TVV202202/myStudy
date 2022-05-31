@@ -1,13 +1,11 @@
 package ru.progwards.java1.lessons.files;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
@@ -84,7 +82,7 @@ public class OrderProcessor {
     public List<OrderItem> itemsList(Path path) {
         List<OrderItem> result = new ArrayList<>();
         try{
-            List<String> lines = Files.readAllLines(path);
+            List<String> lines = Files.readAllLines(path, Charset.forName("windows-1251"));
             for (String line : lines) {
                 String[] lineList = line.split(",|;");
                 //  по уму надо бы проверить на "правильность" строк в файле через исключения
@@ -109,8 +107,8 @@ public class OrderProcessor {
                     }
                 });
             }
-        } catch (IOException ignored){
-
+        } catch (IOException e){
+            System.out.println(e);
         }
         return result;
     }
@@ -168,11 +166,11 @@ public class OrderProcessor {
         OrderProcessor orderProcessor = new OrderProcessor(name);
         LocalDate start = LocalDate.parse("2022-05-31");
         LocalDate finish = LocalDate.parse("2022-05-31");
-        int test = orderProcessor.loadOrders(start, finish, null);
+        int test = orderProcessor.loadOrders(null, null, null);
         System.out.println(test);
-//        for (Order el: orderProcessor.process(null) )
-//            //for (OrderItem orderItem: el.items)
-//                System.out.println(el.toString());
+        for (Order el: orderProcessor.process(null) )
+            //for (OrderItem orderItem: el.items)
+                System.out.println(el.toString());
 //        List<Order> tstList = orderProcessor.process("qqq");
 //        for (Order el : tstList)
 //            for (OrderItem orderItem : el.items)
@@ -180,6 +178,6 @@ public class OrderProcessor {
 //        for (Map.Entry<String, Double> goods: orderProcessor.statisticsByGoods().entrySet()){
 //            System.out.println(goods);
 //        }
-        System.out.println(orderProcessor.statisticsByShop());
+//        System.out.println(orderProcessor.statisticsByDay());
     }
 }
