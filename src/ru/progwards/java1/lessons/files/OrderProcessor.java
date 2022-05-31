@@ -7,6 +7,7 @@ import java.nio.file.attribute.FileTime;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
@@ -56,9 +57,7 @@ public class OrderProcessor {
                 order.setShopId(fileName.substring(0, 3));
                 order.setOrderId(fileName.substring(4, 10));
                 order.setCustomerId(fileName.substring(11, 15));
-                String tmp = Files.getAttribute(el, "lastModifiedTime").toString().substring(0, 21);
-
-                order.setDatetime(LocalDateTime.from(DateTimeFormatter.ISO_LOCAL_DATE_TIME.parse(tmp)));
+                order.setDatetime(Files.getLastModifiedTime(el).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
                 order.setItems(itemsList(el));
                 double sumOrder = 0;
                 for (OrderItem item : order.items) {
