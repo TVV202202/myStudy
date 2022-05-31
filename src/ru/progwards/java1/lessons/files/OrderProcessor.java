@@ -50,9 +50,9 @@ public class OrderProcessor {
     }
 
     public int loadOrders(LocalDate start, LocalDate finish, String shopId) {
-        try{
+        try {
             int result = 0;
-            List<Path> pathList = createFilesList(start, finish,startPath);
+            List<Path> pathList = createFilesList(start, finish, startPath);
             for (Path el : pathList) {
                 Order order = new Order();
                 String fileName = String.valueOf(el.getFileName());
@@ -67,7 +67,7 @@ public class OrderProcessor {
                 }
                 order.setSum(sumOrder);
                 // учитываем даты
-                if (order.items.size()!=0) // если в файле не пойми что или ничего, то не добавляем этот файл
+                if (order.items.size() != 0) // если в файле не пойми что или ничего, то не добавляем этот файл
                     if (shopId == null || order.shopId.equals(shopId))
                         if (start == null || LocalDate.from(order.datetime).compareTo(start) > -1)
                             if (finish == null || LocalDate.from(order.datetime).compareTo(finish) < 1)
@@ -77,7 +77,7 @@ public class OrderProcessor {
                 //orderList.add(order);
             }
             return errorsCount;
-        } catch (IOException e){
+        } catch (IOException e) {
             //orderList.clear();
             return errorsCount;
         }
@@ -86,21 +86,34 @@ public class OrderProcessor {
 
     public List<OrderItem> itemsList(Path path) {
         List<OrderItem> result = new ArrayList<>();
-        try{
-            List<String> lines = Files.readAllLines(path, Charset.forName("windows-1251"));
+        try {
+            List<String> lines = Files.readAllLines(path);
+            result = lineReader(lines);
+        } catch (IOException e1) {
+            try {
+                List<String> lines = Files.readAllLines(path, Charset.forName("windows-1251"));
+                result = lineReader(lines);
+            } catch (IOException e2) {
+                //System.out.println(e2);
+            }
+        }
+        return result;
+    }
+        static List<OrderItem> lineReader(List<String> lines){
+            List<OrderItem> result = new ArrayList<>();
             for (String line : lines) {
                 String[] lineList = line.split(",|;");
                 //  по уму надо бы проверить на "правильность" строк в файле через исключения
-                if (lineList.length!=3) {
+                if (lineList.length != 3) {
                     result.clear();
                     return result;
                 }
                 OrderItem orderItem = new OrderItem();
                 orderItem.setGoogsName(lineList[0]);
-                try{
+                try {
                     orderItem.setCount(Integer.parseInt(lineList[1]));
                     orderItem.setPrice(Double.parseDouble(lineList[2]));
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     result.clear();
                     return result;
                 }
@@ -112,65 +125,62 @@ public class OrderProcessor {
                     }
                 });
             }
-        } catch (IOException e){
-            System.out.println(e);
+            return result;
         }
-        return result;
-    }
 
-    public List<Order> process(String shopId) {
-        List<Order> orders = new ArrayList<>();
-        for (Order order:orderList){
-            if (order.shopId.equals(shopId) || shopId==null) orders.add(order);
-        }
-        orders.sort(new Comparator<Order>() {
-            @Override
-            public int compare(Order o1, Order o2) {
-                return o1.datetime.compareTo(o2.datetime);
+        public List<Order> process (String shopId){
+            List<Order> orders = new ArrayList<>();
+            for (Order order : orderList) {
+                if (order.shopId.equals(shopId) || shopId == null) orders.add(order);
             }
-        });
-        return orders;
-    }
-
-    public Map<String, Double> statisticsByShop() {
-        Map<String, Double> statisticsByShopMap = new TreeMap<>();
-        for (Order order : orderList) {
-            statisticsByShopMap.putIfAbsent(order.shopId, (double) 0);
-            statisticsByShopMap.put(order.shopId, statisticsByShopMap.get(order.shopId) + order.sum);
+            orders.sort(new Comparator<Order>() {
+                @Override
+                public int compare(Order o1, Order o2) {
+                    return o1.datetime.compareTo(o2.datetime);
+                }
+            });
+            return orders;
         }
-        return statisticsByShopMap;
-    }
 
-    public Map<String, Double> statisticsByGoods() {
-        Map<String, Double> statisticsByGoodsMap = new TreeMap<>();
-        for (Order order : orderList) {
-            for (OrderItem orderItem : order.items) {
-                statisticsByGoodsMap.putIfAbsent(orderItem.googsName, (double) 0);
-                statisticsByGoodsMap.put(orderItem.googsName, statisticsByGoodsMap.get(orderItem.googsName) + orderItem.count * orderItem.price);
+        public Map<String, Double> statisticsByShop () {
+            Map<String, Double> statisticsByShopMap = new TreeMap<>();
+            for (Order order : orderList) {
+                statisticsByShopMap.putIfAbsent(order.shopId, (double) 0);
+                statisticsByShopMap.put(order.shopId, statisticsByShopMap.get(order.shopId) + order.sum);
             }
+            return statisticsByShopMap;
         }
-        return statisticsByGoodsMap;
-    }
 
-    public Map<LocalDate, Double> statisticsByDay() {
-        Map<LocalDate, Double> statisticsByDayMap = new TreeMap<>();
-        for (Order order : orderList) {
-            LocalDate date = LocalDate.from(order.datetime);
-            statisticsByDayMap.putIfAbsent(date, (double) 0);
-            statisticsByDayMap.put(date, statisticsByDayMap.get(date) + order.sum);
+        public Map<String, Double> statisticsByGoods () {
+            Map<String, Double> statisticsByGoodsMap = new TreeMap<>();
+            for (Order order : orderList) {
+                for (OrderItem orderItem : order.items) {
+                    statisticsByGoodsMap.putIfAbsent(orderItem.googsName, (double) 0);
+                    statisticsByGoodsMap.put(orderItem.googsName, statisticsByGoodsMap.get(orderItem.googsName) + orderItem.count * orderItem.price);
+                }
+            }
+            return statisticsByGoodsMap;
         }
-        return statisticsByDayMap;
-    }
 
-    public static void main(String[] args)  {
-        String name = "D:\\Test2";
-        OrderProcessor orderProcessor = new OrderProcessor(name);
-        LocalDate start = LocalDate.parse("2022-05-31");
-        LocalDate finish = LocalDate.parse("2022-05-31");
-        int test = orderProcessor.loadOrders(LocalDate.of(2020, Month.JANUARY, 1), LocalDate.of(2020, Month.JANUARY, 9), null);
-        System.out.println(test);
-        for (Order el: orderProcessor.process(null) )
-            //for (OrderItem orderItem: el.items)
+        public Map<LocalDate, Double> statisticsByDay () {
+            Map<LocalDate, Double> statisticsByDayMap = new TreeMap<>();
+            for (Order order : orderList) {
+                LocalDate date = LocalDate.from(order.datetime);
+                statisticsByDayMap.putIfAbsent(date, (double) 0);
+                statisticsByDayMap.put(date, statisticsByDayMap.get(date) + order.sum);
+            }
+            return statisticsByDayMap;
+        }
+
+        public static void main (String[]args){
+            String name = "D:\\Test2";
+            OrderProcessor orderProcessor = new OrderProcessor(name);
+            LocalDate start = LocalDate.parse("2022-05-31");
+            LocalDate finish = LocalDate.parse("2022-05-31");
+            int test = orderProcessor.loadOrders(LocalDate.of(2020, Month.JANUARY, 1), LocalDate.of(2020, Month.JANUARY, 9), null);
+            System.out.println(test);
+            for (Order el : orderProcessor.process(null))
+                //for (OrderItem orderItem: el.items)
                 System.out.println(el.toString());
 //        List<Order> tstList = orderProcessor.process("qqq");
 //        for (Order el : tstList)
@@ -180,5 +190,5 @@ public class OrderProcessor {
 //            System.out.println(goods);
 //        }
 //        System.out.println(orderProcessor.statisticsByDay());
+        }
     }
-}
