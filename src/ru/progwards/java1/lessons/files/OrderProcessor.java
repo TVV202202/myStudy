@@ -102,7 +102,7 @@ public class OrderProcessor {
         static List<OrderItem> lineReader(List<String> lines){
             List<OrderItem> result = new ArrayList<>();
             for (String line : lines) {
-                String[] lineList = line.split(",|;");
+                String[] lineList = line.split(",");
                 //  по уму надо бы проверить на "правильность" строк в файле через исключения
                 if (lineList.length != 3) {
                     result.clear();
