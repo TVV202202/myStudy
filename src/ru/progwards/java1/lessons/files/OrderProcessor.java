@@ -65,15 +65,16 @@ public class OrderProcessor {
                 }
                 order.setSum(sumOrder);
                 // учитываем даты
-                if (order.items.size()!=0 || shopId == null || order.shopId.equals(shopId))
-                    if (start == null || LocalDate.from(order.datetime).compareTo(start) == 1)
-                        if (finish == null || LocalDate.from(order.datetime).compareTo(finish) == -1)
-                            orderList.add(order);
+                if (order.items.size()!=0)
+                    if (shopId == null || order.shopId.equals(shopId))
+                        if (start == null || LocalDate.from(order.datetime).compareTo(start) > -1)
+                            if (finish == null || LocalDate.from(order.datetime).compareTo(finish) < 1)
+                                orderList.add(order);
 
                 // добавим все заказы
                 //orderList.add(order);
             }
-            return 0;
+            return errorsCount;
         } catch (IOException ignored){
             return errorsCount;
         }
@@ -118,7 +119,7 @@ public class OrderProcessor {
         //loadOrders(null, null, shopId);
         List<Order> orders = new ArrayList<>();
         for (Order order:orderList){
-            if (order.shopId.equals(shopId)) orders.add(order);
+            if (order.shopId.equals(shopId) || shopId==null) orders.add(order);
         }
         orders.sort(new Comparator<Order>() {
             @Override
@@ -165,10 +166,10 @@ public class OrderProcessor {
     public static void main(String[] args)  {
         String name = "D:\\Test2";
         OrderProcessor orderProcessor = new OrderProcessor(name);
-        LocalDate start = LocalDate.parse("2022-05-29");
-        LocalDate finish = LocalDate.parse("2022-05-30");
-        int test = orderProcessor.loadOrders(null, null, null);
-//        System.out.println(test);
+        LocalDate start = LocalDate.parse("2022-05-31");
+        LocalDate finish = LocalDate.parse("2022-05-31");
+        int test = orderProcessor.loadOrders(start, finish, null);
+        System.out.println(test);
 //        for (Order el: orderProcessor.process(null) )
 //            //for (OrderItem orderItem: el.items)
 //                System.out.println(el.toString());
@@ -176,9 +177,9 @@ public class OrderProcessor {
 //        for (Order el : tstList)
 //            for (OrderItem orderItem : el.items)
 //                System.out.println(orderItem.toString());
-        for (Map.Entry<String, Double> goods: orderProcessor.statisticsByGoods().entrySet()){
-            System.out.println(goods);
-        }
- //       System.out.println(orderProcessor.statisticsByGoods());
+//        for (Map.Entry<String, Double> goods: orderProcessor.statisticsByGoods().entrySet()){
+//            System.out.println(goods);
+//        }
+        System.out.println(orderProcessor.statisticsByShop());
     }
 }
