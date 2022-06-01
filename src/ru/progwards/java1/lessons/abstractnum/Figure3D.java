@@ -1,6 +1,6 @@
 package ru.progwards.java1.lessons.abstractnum;
 
-public class Figure3D extends Number{
+public abstract class Figure3D extends Number{
     Number segment;
 
     public Figure3D(Number segment) {
