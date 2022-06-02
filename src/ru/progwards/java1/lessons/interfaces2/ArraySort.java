@@ -27,6 +27,7 @@ public class ArraySort {
         sort(kishmish2);
         for (Object i : kishmish2)
             System.out.print(i + " ");
+        System.out.println();
 
     }
 
