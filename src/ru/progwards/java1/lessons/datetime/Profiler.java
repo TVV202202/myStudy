@@ -9,39 +9,32 @@ public class Profiler {
     static int duration = 0;
 
     public static void enterSection(String name) {
-        StackItem stackitem = new StackItem(name);
-        stackitem.startTime = new Date().getTime();
-
+        StackItem stackitem = new StackItem();
         stackItems.add(stackitem);
     }
 
     public static void exitSection(String name) {
-        for (int i=stackItems.size()-1; i>=0; i--) {
-            if (stackItems.get(i).name.equals(name)) {
-                stackItems.get(i).durationLast=(int) (new Date().getTime() - stackItems.get(i).startTime);
-                StatisticInfo statisticInfo = new StatisticInfo(name);
-                statisticInfo.fullTime = stackItems.get(i).durationLast;
-                if (i!= stackItems.size()-1){
-
-                }
-                //statisticInfo.selfTime = statisticInfo.fullTime - (i-1>=0 ? stackItems.get(i-1).durationLast : 0);
-                //duration = tempDeque.pollLast().durationLast;
-                //statisticInfo.selfTime = statisticInfo.fullTime - (int) Objects.requireNonNull(tempDeque.pollLast()).durationLast;
-
-                if (statisticInfoMap.containsKey(statisticInfo.sectionName)) {
-                    statisticInfoMap.get(statisticInfo.sectionName).fullTime += statisticInfo.fullTime;
-                    statisticInfoMap.get(statisticInfo.sectionName).selfTime += statisticInfo.selfTime;
-                    statisticInfoMap.get(statisticInfo.sectionName).count += 1;
-                } else {
-                    statisticInfoMap.put(statisticInfo.sectionName, statisticInfo);
-                }
-                stackItems.remove(i);
-                break;
-
-            }
+        StackItem si = stackItems.get(stackItems.size() - 1);
+        si.fullTime = (int) (new Date().getTime() - si.startTime);
+        si.selfTime = si.selfTime + si.fullTime;
+        stackItems.remove(si);
+        //вычесть из всех  остальных в стеке
+        for (int i = stackItems.size() - 1; i >= 0; i--)
+        {
+            StackItem cur = stackItems.get(i);
+            cur.selfTime = cur.selfTime - si.selfTime;
         }
-        if (stackItems.size() == 0) duration = 0;
+
+        if (statisticInfoMap.containsKey(name)) {
+            statisticInfoMap.get(name).fullTime += si.fullTime;
+            statisticInfoMap.get(name).selfTime += si.selfTime;
+            statisticInfoMap.get(name).count++;
+        } else {
+            statisticInfoMap.put(name, StatisticInfo.update(name, si));
+        }
+
     }
+
 
     public static List<StatisticInfo> getStatisticInfo() {
         List<StatisticInfo> statisticInfoList = new ArrayList<>();
@@ -52,12 +45,13 @@ public class Profiler {
     }
 
     static class StackItem {
-        String name;
         public long startTime;
-        int durationLast;
+        public int fullTime;// полное время выполнения секции в миллисекундах.
+        public int selfTime;// чистое время выполнения секции в миллисекундах.
 
-        public StackItem(String name) {
-            this.name = name;
+        public StackItem() {
+            startTime = new Date().getTime();
+            selfTime = 0;
         }
     }
 

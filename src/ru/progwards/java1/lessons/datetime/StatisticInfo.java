@@ -8,9 +8,14 @@ public class StatisticInfo {
     public int count;   // - количество вызовов. В случае, если вызовов более одного, fullTime и selfTime
                         // содержат суммарное время выполнения всех вызовов.
 
-    public StatisticInfo(String sectionName) {
-        this.sectionName = sectionName;
-        count = 1;
+    static StatisticInfo update(String name, Profiler.StackItem item)
+    {
+        StatisticInfo res = new StatisticInfo();
+        res.sectionName = name;
+        res.fullTime = item.fullTime;
+        res.selfTime = item.selfTime;
+        res.count = 1;
+        return res;
     }
 
 }
