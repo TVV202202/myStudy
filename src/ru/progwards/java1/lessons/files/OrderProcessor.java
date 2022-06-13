@@ -102,8 +102,8 @@ public class OrderProcessor {
             OrderItem orderItem = new OrderItem();
             orderItem.setGoogsName(lineList[0]);
             try {
-                orderItem.setCount(Integer.parseInt(lineList[1]));
-                orderItem.setPrice(Double.parseDouble(lineList[2]));
+                orderItem.setCount(Integer.parseInt(lineList[1].strip()));
+                orderItem.setPrice(Double.parseDouble(lineList[2].strip()));
             } catch (NumberFormatException e) {
                 result.clear();
                 return result;
