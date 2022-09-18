@@ -6,6 +6,8 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static java.lang.Math.min;
+
 public class Test {
 
     public static Integer sqr(Integer n) {
@@ -362,10 +364,91 @@ public class Test {
             return false;
         }
     }
+    static String swapWords(String sentance){
+        StringTokenizer tokenizer = new StringTokenizer(sentance," .,-!\n");
+        String result = "";
+        while (tokenizer.hasMoreTokens()){
+            String tmp = tokenizer.nextToken();
+            if (tokenizer.hasMoreTokens()) result += tokenizer.nextToken() + " ";
+            result += tmp + " ";
+        }
+
+        return result.strip();
+    }
+//    static class Person {
+//        public String name;
+//        public Date birth;
+//        public double salary;
+//
+//        Person(String name, Date birth, double salary) {
+//            this.name = name;
+//            this.birth = birth;
+//            this. salary = salary;
+//        }
+//    }
+//    static void printPersons(Person[] persons){
+//        for (Person el: persons)
+//            System.out.printf(new Locale("ru"),"|%1$-10s|%2$td/%2$tm/%2$tY|%3$,10.2f|\n", el.name,el.birth,el.salary);
+//    }
+    static class Person {
+        private String name;
+        private int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String toString() {
+            return name + " " + age;
+        }
+    }
+
+    static void sortAndPrint(List<Person> list){
+        list.sort(Comparator.comparing(a -> a.age));
+        list.forEach(System.out::println);
+    }
+    static String reverseChars(String str){
+        if (str.length()==0 || str.length()==1)
+            return str;
+        return str.substring(str.length()-1) + reverseChars(str.substring(0, str.length()-1));
+    }
+
+    static void numberSum(int number, int k, String s) {
+        if (number == 0) {
+            System.out.println(s);
+        } else {
+            for (int i = 1; i <= min(number, k); i++) {
+                numberSum(number - i, i, s + i);
+            }
+        }
+    }
+
+    static void numS(int number, String s){
+        if (number == 0) {
+            System.out.println(s);
+        } else {
+            for (int i = 1; i <= number; i++) {
+                if (s.length()==0 || Integer.parseInt(s.substring(s.length()-1))>=i)
+                    numS(number - i, s + i);
+            }
+        }
+    }
 
     public static void main(String[] args) {
 
-        boolean t = replaceF("1.txt");
+//        String txt1 =
+//                "Слово - серебро, молчание - золото! wetwet";
+//        System.out.println(swapWords(txt1));
+        //System.out.format("|%04d|%#x|%2.1f|", 2, 15, 3.25);
+//        Person p1 = new Person("Vas", 40);
+//        Person p2 = new Person("Peter", 20);
+//        List<Person> persons = new ArrayList<>();
+//        persons.add(p1);
+//        persons.add(p2);
+//        sortAndPrint(persons);
+        System.out.println(reverseChars(""));
+//        System.out.printf("|%1$-10s|%2$td/%2$tm/%2$tY|%3$,10.2f", p1.name,p1.birth,p1.salary);
     }
 }
 
