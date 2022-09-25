@@ -23,10 +23,15 @@ public class DynamicArray<T> {
         dinArray[pos]=item;
     }
     public void remove(int pos){
-        T[] tmp = (T[]) new Object[dinArray.length -1];
-        System.arraycopy(dinArray,0, tmp, 0, pos);
-        System.arraycopy(dinArray,pos+1, tmp, pos, dinArray.length-1-pos);
-        dinArray = tmp;
+        if (dinArray.length > pos) {
+            T[] tmp = (T[]) new Object[dinArray.length - 1];
+            System.arraycopy(dinArray, 0, tmp, 0, pos);
+            System.arraycopy(dinArray, pos + 1, tmp, pos, dinArray.length - 1 - pos);
+            dinArray = tmp;
+        }
+        else {
+            System.out.println("no such array element");
+        }
     }
     public T get(int pos){
         return dinArray[pos];
@@ -48,7 +53,7 @@ public class DynamicArray<T> {
         System.out.println(tt);
         tt.insert(2, "5");
         System.out.println(tt);
-        tt.remove(4);
+        tt.remove(7);
         System.out.println(tt);
         System.out.println(tt.get(3));
         System.out.println(tt.size());
