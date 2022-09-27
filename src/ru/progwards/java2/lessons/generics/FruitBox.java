@@ -3,7 +3,7 @@ package ru.progwards.java2.lessons.generics;
 import java.util.ArrayList;
 
 public class FruitBox<E extends Fruit> extends ArrayList<E> {
-
+// победить пустую корзину так и не смог
     @Override
     public boolean add(E fruit) {
         if (this.size() == 0) {
