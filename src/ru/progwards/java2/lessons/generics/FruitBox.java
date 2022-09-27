@@ -25,7 +25,7 @@ public class FruitBox<E extends Fruit> extends ArrayList<E> {
             }
     }
 
-    public void moveTo(FruitBox newBox) {
+    public void moveTo(FruitBox<E> newBox) {
         for (int i=0; i<this.size();i++) {
             if (!newBox.add(this.get(i))) {
                 throw new UnsupportedOperationException();
@@ -34,7 +34,7 @@ public class FruitBox<E extends Fruit> extends ArrayList<E> {
         this.clear();
     }
 
-    public Integer compareTo(FruitBox anotherBox){
+    public Integer compareTo(FruitBox<E> anotherBox){
         return Float.compare(this.getWeight(), anotherBox.getWeight());
     }
     @Override
