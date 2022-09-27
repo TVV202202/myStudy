@@ -2,10 +2,10 @@ package ru.progwards.java2.lessons.generics;
 
 import java.util.ArrayList;
 
-public class FruitBox<Fruit> extends ArrayList<Fruit> {
+public class FruitBox<E extends Fruit> extends ArrayList<E> {
 
     @Override
-    public boolean add(Fruit fruit) {
+    public boolean add(E fruit) {
         if (this.size() == 0) {
             return super.add(fruit);
         }
@@ -13,52 +13,23 @@ public class FruitBox<Fruit> extends ArrayList<Fruit> {
             return super.add(fruit);
         }
         return false;
-//                return super.add(fruit);
+//        return super.add(fruit);
     }
 
-
-    void addAll(ArrayList <? extends Fruit> items){
-        for (Fruit item : items) {
-            this.add(item);
-        }
-    }
-
-//    public boolean remove(Object fruit){
-//        return super.remove(fruit);
-//    }
 
     public float getWeight() {
         if (this.size() == 0) {
             return modCount * 0f;
-        } else if (this.get(0).getClass().getSimpleName().equals("Apple")) {
-            // уродливая конструкция на мой взгляд, но больше ничего не смог придумать
-            return modCount * 1.0f;
+        } else {
+            return modCount * this.get(0).weightF();
             }
-            if (this.get(0).getClass().getSimpleName().equals("Orange")) {
-                return modCount * 1.5f;
-            }
-        return modCount * 0f;
     }
 
     public void moveTo(FruitBox newBox) {
-//        if (this.get(0).getClass().getSimpleName().equals(newBox.get(0).getClass().getSimpleName())){
-//            for (int i=0; i<this.size(); i++){
-//                if (!newBox.add(this.get(i))){
-//                    throw new UnsupportedOperationException();
-//                }
-//            }
-//        this.clear();
-//        }
-//        else{
-//            throw new UnsupportedOperationException();
-//        }
-//        return this;
-
-        // никак не могу обойти пересыпание яблок в пустую корзину для апельсинов.
-        for (int i=0; i<this.size(); i++){
-             if (!newBox.add(this.get(i))){
-                 throw new UnsupportedOperationException();
-             }
+        for (int i=0; i<this.size();i++) {
+            if (!newBox.add(this.get(i))) {
+                throw new UnsupportedOperationException();
+            }
         }
         this.clear();
     }
@@ -75,7 +46,7 @@ public class FruitBox<Fruit> extends ArrayList<Fruit> {
 
     public static void main(String[] args) {
         FruitBox<Apple> boxA = new FruitBox<>();
-        System.out.println(boxA.getWeight());
+//        System.out.println(boxA.getWeight());
         Apple a1 = new Apple();
         Apple a2 = new Apple();
         Orange o1 = new Orange();
@@ -86,16 +57,31 @@ public class FruitBox<Fruit> extends ArrayList<Fruit> {
         FruitBox<Orange> boxC = new FruitBox<>();
         boxC.add(o1);
         boxA.moveTo(boxB);
+        System.out.println(boxA.getWeight());
         System.out.println(boxB.getWeight());
         System.out.println(boxC.getWeight());
-        System.out.println(boxB.compareTo(boxC));
+ //       System.out.println(boxB.compareTo(boxC));
     }
 
 }
 
 abstract class Fruit {
+    float m;
+    float weightF(){
+        return m;
+    }
 }
 class Apple extends Fruit{
+    float m;
+    @Override
+    float weightF(){
+        return m=1.0f;
+    }
 }
 class Orange extends Fruit{
+    float m;
+    @Override
+    float weightF(){
+        return m=1.5f;
+    }
 }
