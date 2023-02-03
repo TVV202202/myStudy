@@ -434,6 +434,30 @@ public class Test {
             }
         }
     }
+    enum CompareResult {LESS, EQUAL, GREATER};
+
+    static <T extends Comparable<T>>CompareResult compare(T a, T b){
+        if (a.compareTo(b)>0)
+            return CompareResult.GREATER;
+        if (a.compareTo(b)<0)
+            return CompareResult.LESS;
+        return CompareResult.EQUAL;
+    }
+
+    static <T> void swap(List<T> lst, int a, int b){
+        T tmp = lst.get(a);
+        lst.set(a, lst.get(b));
+        lst.set(b, tmp);
+    }
+
+    static <T> ArrayList<T> from(T[] arr){
+        ArrayList<T> tst = new ArrayList<>();
+        for (T el:arr){
+            tst.add(el);
+        }
+        return tst;
+    }
+
 
     public static void main(String[] args) {
 
@@ -447,8 +471,18 @@ public class Test {
 //        persons.add(p1);
 //        persons.add(p2);
 //        sortAndPrint(persons);
-        System.out.println(reverseChars(""));
+//        System.out.println(compare("erer","opii"));
 //        System.out.printf("|%1$-10s|%2$td/%2$tm/%2$tY|%3$,10.2f", p1.name,p1.birth,p1.salary);
+//        ArrayList<String> qqq = new ArrayList<>();
+//        qqq.add("ghgh");
+//        qqq.add("uuu");
+//        qqq.add("cfgdgf");
+//        qqq.add("popo");
+//        swap(qqq, 1,2);
+//        System.out.println(qqq);
+        String[] q = {"eee","iii"};
+
+        System.out.println(from(q));
     }
 }
 
